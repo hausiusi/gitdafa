@@ -31,8 +31,11 @@ class CmdOutput:
 
 class CmdRunner():
     def run(self, cmd, debug=False, exit_on_fail=True):
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE, universal_newlines=True, shell=True)
+        p = subprocess.Popen(cmd,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE,
+                             universal_newlines=True,
+                             shell=True)
         cmd_output = CmdOutput(cmd, p.communicate())
         self.verify(cmd_output, debug, exit_on_fail)
         return cmd_output
@@ -44,7 +47,8 @@ class CmdRunner():
             print(f"Standard error: '{cmd_output.stderror}'")
         if not cmd_output.success:
             print(
-                f"Failed to execute: '{cmd_output.cmd}' with error: '{cmd_output.error}'")
+                f"Failed to execute: '{cmd_output.cmd}' with error: '{cmd_output.error}'"
+            )
             if exit_on_fail:
                 print("Exiting the program")
                 sys.exit(-1)
