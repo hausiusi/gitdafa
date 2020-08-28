@@ -35,7 +35,10 @@ class CmdRunner():
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
                              universal_newlines=True,
+                             bufsize=8192,
+                             encoding="utf-8",
                              shell=True)
+
         cmd_output = CmdOutput(cmd, p.communicate())
         self.verify(cmd_output, debug, exit_on_fail)
         return cmd_output
