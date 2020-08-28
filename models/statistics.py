@@ -4,4 +4,10 @@
 
 class Statistics:
     def __init__(self):
-        self.authors: Author = []
+        self.authors: dict = {}
+
+    def __str__(self):
+        return f"{'authors': '{[authors.keys()]}'}"
+
+    def __repr__(self):
+        return str(self.authors)

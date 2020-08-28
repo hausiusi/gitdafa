@@ -28,6 +28,8 @@ class CmdOutput:
     def success(self):
         return self.success_value
 
+    def __str__(self):
+        return f"CmdOutput object - CMD: {self.cmd_text}"
 
 class CmdRunner():
     def run(self, cmd, debug=False, exit_on_fail=True):
