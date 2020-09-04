@@ -1,5 +1,8 @@
 class Change:
-    def __init__(self, file_name:str = None, added:str = None, deleted:str = None):
+    def __init__(self,
+                 file_name: str = None,
+                 added: str = None,
+                 deleted: str = None):
         self.file = file_name
         self.added = added
         self.deleted = deleted
