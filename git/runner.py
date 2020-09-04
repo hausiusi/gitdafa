@@ -31,8 +31,10 @@ class CmdOutput:
     def __str__(self):
         return f"CmdOutput object - CMD: {self.cmd_text}"
 
-class CmdRunner():
-    def run(self, cmd, debug=False, exit_on_fail=True):
+
+class CmdRunner:
+    @classmethod
+    def run(cls, cmd, debug=False, exit_on_fail=True):
         p = subprocess.Popen(cmd,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
@@ -42,10 +44,11 @@ class CmdRunner():
                              shell=True)
 
         cmd_output = CmdOutput(cmd, p.communicate())
-        self.verify(cmd_output, debug, exit_on_fail)
+        cls.verify(cmd_output, debug, exit_on_fail)
         return cmd_output
 
-    def verify(self, cmd_output: CmdOutput, debug: bool, exit_on_fail: bool):
+    @classmethod
+    def verify(cls, cmd_output: CmdOutput, debug: bool, exit_on_fail: bool):
         if debug:
             print(f"Executed: '{cmd_output.cmd}'")
             print(f"Standard output: '{cmd_output.stdout}'")

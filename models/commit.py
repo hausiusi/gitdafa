@@ -1,5 +1,9 @@
 class Commit:
-    def __init__(self, commit_id: str, author: str = None, date=None, message: str = None):
+    def __init__(self,
+                 commit_id: str,
+                 author: str = None,
+                 date=None,
+                 message: str = None):
         self._id = commit_id
         self.author = author
         self.date = date
