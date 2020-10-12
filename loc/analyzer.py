@@ -51,6 +51,7 @@ class CodeFileAnalyzer:
             comments = known_types[self.type]["comments"]
         comment_end = ""
         comment_end_found = True
+        self.__analyze_result_add_missing(self.type)
         try:
             for line in open(code_file_path, "r", encoding="utf-8"):
                 line = line.lstrip()
@@ -78,17 +79,16 @@ class CodeFileAnalyzer:
         except IOError as ex:
             msg = f"Can not open {code_file_path} {ex}"
             print(msg)
-            CodeFileAnalyzer.result[self.type]["types"].append(msg)
+            CodeFileAnalyzer.result[self.type]["errors"].append(msg)
         except UnicodeDecodeError as ex:
             msg = "Failed to decode file: {code_file_path} {ex}"
             print(msg)
-            CodeFileAnalyzer.result[self.type]["types"].append(msg)
+            CodeFileAnalyzer.result[self.type]["errors"].append(msg)
         except Exception as ex:
             msg = f"Exception while opening and parsing {code_file_path} {ex}"
             print(msg)
-            CodeFileAnalyzer.result[self.type]["types"].append(msg)
+            CodeFileAnalyzer.result[self.type]["errors"].append(msg)
         else:
-            self.__analyze_result_add_missing(self.type)
             self.__analyze_result_update_values(self.type, self.comment_lines,
                                                 self.code_lines,
                                                 self.empty_lines,
