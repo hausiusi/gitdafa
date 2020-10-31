@@ -1,7 +1,3 @@
-""" Module for all git controls and filters. 
-The module control is intended for searching and retrieving 
-sertain git statistics. """
-
 
 class Cmd:
     """String constants for a git command"""
