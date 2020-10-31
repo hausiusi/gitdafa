@@ -3,9 +3,16 @@
 
 import json
 import os
+"""
+Leads all configuration parameters and implements the code file analyzer
+ and a function for retrieving file names.
+"""
 
 
 def __json_load(file_path: str):
+    """
+    Read json file from a specified file_path
+    """
     with open(file_path) as f:
         return json.load(f)
 
@@ -16,26 +23,70 @@ known_types = __json_load("loc/known_types.json")
 
 
 def ignored_directories_clear():
+    """
+    Clear ignored directories dictionary
+    """
     global ignored_directories
     ignored_directories = {}
 
 
 def ignored_extensions_clear():
+    """
+    Clear ignored extensions dictionary
+    """
     global ignored_extensions
     ignored_extensions = {}
 
 
 def ignored_directories_extend(directories):
+    """
+    Extend ignored_directories dictionary
+    
+    Parameters
+    ----------
+    directories : dict
+    """
     global ignored_directories
     ignored_directories.extend(directories)
 
 
 def ignored_extensions_extend(extensions):
+    """
+    Extend ignored_extensions dictionary
+    
+    Parameters
+    ----------
+    extensions : dict
+    """
     global ignored_extensions
     ignored_extensions.extend(extensions)
 
 
 class CodeFileAnalyzer:
+    """
+    Analyze code in file
+    
+    Parameters
+    ----------
+    code_file_path : str
+    
+    Class Attributes
+    ---------------
+    result : dict
+        Dictionary for storing CodeFileAnalyzer results
+
+    Attributes
+    ----------
+    extension : str
+        Code file extension
+    code_lines : int
+        Code line count
+    comment_lines : int
+        Comment line count
+    empty_lines : int
+        Empty line count
+
+    """
     result = {}
 
     def __init__(self, code_file_path: str):
@@ -95,7 +146,7 @@ class CodeFileAnalyzer:
                                                 self.extension)
 
     def __analyze_result_add_missing(self, element):
-        ''' Adds to result dict and initializes a key when missing '''
+        """ Adds to result dict and initializes a key when missing """
         if element in CodeFileAnalyzer.result:
             return
         CodeFileAnalyzer.result[element] = {}
@@ -117,6 +168,18 @@ class CodeFileAnalyzer:
 
 
 def get_file_names(root_dir: str):
+    """
+    Get all files in specified directories
+    
+    Parameters
+    ----------
+    root_dir : str
+    
+    Returns
+    -------
+    list of str
+        List of file paths
+    """
     file_paths = []
     for root, _, files in os.walk(root_dir):
         continue_next = False
