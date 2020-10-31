@@ -1,7 +1,30 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 class Commit:
+    """
+    Model, to reflect commit properties.
+    
+    Parameters
+    ----------
+    commit_id : str
+    author : Author, optional
+    date : datetime.datetime, optional
+    message : str, optional
+
+    Attributes
+    ----------
+    self._id : str
+        commit ID 
+    self.author : Author
+    self.date : datetime.datetime
+    self.message : str
+    self.changes : list of Change
+    """
     def __init__(self,
                  commit_id: str,
-                 author: str = None,
+                 author=None,
                  date=None,
                  message: str = None):
         self._id = commit_id

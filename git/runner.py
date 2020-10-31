@@ -3,9 +3,47 @@
 
 import subprocess
 import sys
+"""
+Module provides command running and output handling functionality
+"""
 
 
 class CmdOutput:
+    """
+    CmdOutput(cmd_text, *output)
+    
+    Object for storing git command output
+    
+    Parameters
+    ----------
+    cmd_text : str
+        Command string conatant
+    
+    *output : argv
+        Command output parameters
+
+    Attributes
+    ---------
+    cmd_text : str
+        Command string conatant
+    output : list of str
+        Command output
+    error : list of str
+        Error output
+    success_value : bool
+        Command success state
+
+    Properties
+    ----------
+    cmd : str
+        Command string conatant
+    stdout : list of str
+        Command output
+    stderror : list of str
+        Error output
+    success : bool
+        Command success state
+    """
     def __init__(self, cmd_text, *output):
         self.cmd_text = cmd_text
         self.output = str(output[0][0]).strip('\n')
@@ -33,8 +71,31 @@ class CmdOutput:
 
 
 class CmdRunner:
+    """
+    Functions for running and diplaying git command results
+    
+    Methods
+    -------
+    run(cmd, debug=False, exit_on_fail=True)
+        Run git command in a subprocess and return a result
+    verify(cmd_output: CmdOutput, debug: bool, exit_on_fail: bool)
+        Display command output with formatted way and verify command 
+        success status.
+    """
     @classmethod
     def run(cls, cmd, debug=False, exit_on_fail=True):
+        """
+        Parameters
+        ----------
+        cmd : str 
+            Command text  
+        debug : bool, optional
+        exit_on_fail : bool, optional
+        
+        Returns
+        -------
+        CmdOutput
+        """
         p = subprocess.Popen(cmd,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
@@ -49,6 +110,18 @@ class CmdRunner:
 
     @classmethod
     def verify(cls, cmd_output: CmdOutput, debug: bool, exit_on_fail: bool):
+        """
+        Parameters
+        ----------
+        cmd_output : CmdOutput
+        debug : bool, optional
+        exit_on_fail : bool, optional
+        
+        Returns
+        -------
+        bool
+            Successful verification
+        """
         if debug:
             print(f"Executed: '{cmd_output.cmd}'")
             print(f"Standard output: '{cmd_output.stdout}'")

@@ -3,6 +3,9 @@
 
 
 class Statistics:
+    """
+    Model currently implements only a attribute with type dictionary of Author's
+    """
     def __init__(self):
         self.authors: dict = {}
 
