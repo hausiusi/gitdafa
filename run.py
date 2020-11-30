@@ -54,17 +54,17 @@ if __name__ == "__main__":
 
     stats = get_stats()
     for aut in stats.authors:
-        print(f"Author: {stats.authors[aut].name} - " + \
-              f"{stats.authors[aut].commits_count} commits" + \
-                  f" {stats.authors[aut].lines_added} lines added" + \
-                      f" {stats.authors[aut].lines_deleted} lines deleted")
-
+        print(f"Author: {stats.authors[aut].name} - " \
+              f"{stats.authors[aut].commits_count} commits" \
+              f" {stats.authors[aut].lines_added} lines added" \
+              f" {stats.authors[aut].lines_deleted} lines deleted")
+        pass
     file_paths = loc.get_file_names(args.projdir)
     for f in file_paths:
         result = loc.CodeFileAnalyzer(f)
-        print(
-            f"File: {f} code: {result.code_lines}, comments: {result.comment_lines}, empty: {result.empty_lines}"
-        )
+        print(f"File: {f} code: {result.code_lines}," \
+              "comments: {result.comment_lines}, empty:" \
+              "{result.empty_lines}")
 
     print(loc.CodeFileAnalyzer.result)
     # change working directory back to saved one
