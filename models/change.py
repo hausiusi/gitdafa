@@ -24,6 +24,13 @@ class Change:
         self.added = added
         self.deleted = deleted
 
+    def __eq__(self, item):
+        if (item.added == self.added and item.deleted == self.deleted
+                and item.file == self.file):
+            return True
+        else:
+            return False
+
     def __str__(self):
         return f"File: {self.file}, "  + \
             f"Added: {self.added}, " + \

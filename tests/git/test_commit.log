@@ -1,0 +1,224 @@
+commit 46f85ef0058d22e043a471c22de238fd4c24f5f1
+Merge: 913e705 77c8077
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Tue Dec 8 19:34:51 2020 +0400
+
+    Merge branch 'issue_43'
+
+commit 77c8077df558e629fc9d069470692a57cf6165ee
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Tue Dec 1 00:05:09 2020 +0400
+
+    Refactor and modify parser
+    
+    Optimize the parser.py using regex methods.
+    
+    Closes #43
+
+56	60	git/parser.py
+8	8	run.py
+
+commit 4ec846a9c78100a0e1821500eda20b76a73ee449
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Sat Oct 31 17:24:08 2020 +0400
+
+    Add docstring
+    
+    Add a basic docstring to all modules
+    
+    Closes #38
+
+7	0	git/__init__.py
+0	4	git/control.py
+117	5	git/parser.py
+73	0	git/runner.py
+3	0	loc/__init__.py
+64	1	loc/analyzer.py
+3	0	models/__init__.py
+39	1	models/author.py
+19	2	models/change.py
+24	1	models/commit.py
+3	0	models/statistics.py
+
+commit 913e70598c6ab45325572488395ba99b1ddd16b6
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Sat Oct 31 17:24:08 2020 +0400
+
+    Add docstring
+    
+    Add a basic docstring to all modules
+    
+    Closes #38
+
+7	0	git/__init__.py
+0	4	git/control.py
+117	5	git/parser.py
+73	0	git/runner.py
+3	0	loc/__init__.py
+64	1	loc/analyzer.py
+3	0	models/__init__.py
+39	1	models/author.py
+19	2	models/change.py
+24	1	models/commit.py
+3	0	models/statistics.py
+
+commit ec378669ad77640982d45ae2c463ff6f91bee41a
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 23:56:51 2020 +0200
+
+    Count lines of code from files
+    
+    Implemented a basic code line counter. Can distinguish several language
+    files and successfully count empty, code and comment lines.
+    
+    Closes #4
+    
+    Can ignore some file extensions and directories.
+    File extensions and directories can be reset or/and appended using
+    optional arguments, hence, can be ignored some directories. e.g. when
+    they are third party and user wants to count only own code lines.
+    
+    Example of usage: python3 run.py -p pat_to_project_root_dir --igndir
+    dir1_to_ignore dir2_to_ignore dirn_to_ignore --ignext ext1_to_ignore
+    ext2_to_ignore extn_to_ignore
+    
+    Closes #9
+
+1	0	loc/__init__.py
+139	0	loc/analyzer.py
+1	0	loc/ignored_directories.json
+1	0	loc/ignored_extensions.json
+67	0	loc/known_types.json
+21	1	run.py
+
+commit d7f93d30419c6555fd1c04ad32a19ac3ef8430f0
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Fri Sep 4 15:13:10 2020 +0400
+
+    Refactor run.py and add git package
+    
+    * Add git package
+    * Move git command constants to git/control module
+    * Move parsing related functions to git/parser module
+    * Move cmd_runner module into a git package and rename to runner
+    * Refactor run.py file
+    
+    Closes #29
+    Closes #19
+    Closes #16
+
+7	0	git/__init__.py
+13	0	git/control.py
+113	0	git/parser.py
+7	4	cmd_runner.py => git/runner.py
+4	4	models/__init__.py
+4	1	models/change.py
+5	1	models/commit.py
+10	110	run.py
+
+commit 28f481e29d4d6a3f58d85d5a232d2d13252c0ceb
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Fri Aug 28 16:16:59 2020 +0400
+
+    Add models and parse commits
+    
+    * Added object str representation for CmdOutput
+    * Added Change and Commit model in models
+    * Refactored all models
+    * Added "git show" parsing functions
+    * Added attributes in the Author class, to count all added and deleted lines (Closes #5)
+    
+    Closes #22
+
+2	0	cmd_runner.py
+2	0	models/__init__.py
+36	4	models/author.py
+13	0	models/change.py
+16	0	models/commit.py
+7	1	models/statistics.py
+108	3	run.py
+
+commit f0a2b7fcb1a050f3db9d833501d61c478c7ebe9d
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 23:52:52 2020 +0200
+
+    Fix some commands fail on Windows from runner
+    
+    The reason was encoding: some stdoutputs were in different encoding and
+    seems subprocess was not managing to handle
+    
+    Closes #25
+
+3	0	cmd_runner.py
+
+commit 06f00d8d34708c98395826e7201807d2176b3054
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 10:55:25 2020 +0200
+
+    List repo authors and commits per contributor
+    
+    Closes #3
+    Closes #8
+
+2	0	models/__init__.py
+9	0	models/author.py
+7	0	models/statistics.py
+39	5	run.py
+
+commit 4e9afeb85b03bcecaee589c701e463ee0091cfbf
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 10:53:52 2020 +0200
+
+    Update gitignore
+    
+    Ignoring .vscode folder from editor
+
+2	1	.gitignore
+
+commit 7532bd43ff1216871d1c9554839e0e09ae7ffeef
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Thu Aug 27 22:13:56 2020 +0200
+
+    Format code according to yapf
+    
+    Closes #13
+
+7	3	cmd_runner.py
+
+commit 9bdf88f26fa35b133835011d83256270760e3be9
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Fri Aug 28 01:04:58 2020 +0400
+
+    Add requirements.txt
+    
+    Closes #12
+
+0	0	requirements.txt
+
+commit 15e9b586397a3e9e10a2ce6b7e0e40405efe6686
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Tue Aug 25 21:30:54 2020 +0200
+
+    Implement a basic runner for subprocess
+    
+    The patch provides class for running and verifying the command
+    automatically. It returns standard output and standard error with
+    success property to distinguish if the last command run failed when
+    exit_on_fail is False.
+    
+    Closes #2
+
+53	0	cmd_runner.py
+12	0	run.py
+
+commit 580b36c32dd54e5c416fff12d2078fb8361f313b
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Mon Aug 24 23:24:08 2020 +0200
+
+    Initial commit
+    
+    Add python.gitignore
+    
+    Closes #1
+
+141	0	.gitignore

@@ -62,7 +62,7 @@ class Author:
             self.lines_deleted += change.deleted
         self.commits.append(commit)
 
-    def __eq__(self):
+    def __eq__(self, item):
         if item.email == self.email:
             return True
         else:

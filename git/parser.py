@@ -161,7 +161,7 @@ class Parse:
             Changes in commit
         """
         changes = []
-        for line in re.finditer("\d*\t\d*\t.*", text):
+        for line in re.finditer(r"\d*\t\d*\t.*", text):
             changes.append(cls.__get_file_change(line.group(0)))
         return changes
 
@@ -183,10 +183,10 @@ class Parse:
         for line in output:
             parts = line.split("\t")
             if len(parts) > 1:
-                author = Author()
-                author.commits_count = parts[0]
-                author.name = parts[1]
-                authors.append(author)
+                authors.append({
+                    'name': parts[1],
+                    'commit_cnt': int(parts[0].strip())
+                })
         return authors
 
     @classmethod
