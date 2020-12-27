@@ -1,0 +1,15 @@
+{
+    "sample_path": "clang.c",
+    "test_data":{
+	".c":
+	{
+	    "comments": 2,
+	    "code_lines": 7,
+	    "empty_lines": 4,
+	    "files_count": 1,
+	    "types": [".c"],
+	    "errors": []
+	}
+
+    }
+}

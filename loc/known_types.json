@@ -63,5 +63,12 @@
   ".py": { "comments": [["#", "\n"]], "description": "Python source" },
   ".yml": { "comments": [["#", "\n"]], "description": "Yaml source" },
   ".md": { "comments": [], "description": "Markdown file" },
-  ".json": { "comments": [], "description": "Json file" }
+  ".json": { "comments": [], "description": "Json file" },
+  ".js": {
+      "comments": [
+	  ["//", "\n"],
+	  ["/*", "*/"]
+      ],
+      "description": "Json file"
+  } 
 }

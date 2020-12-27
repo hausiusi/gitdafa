@@ -1,0 +1,14 @@
+{
+    "sample_path": "json.json",
+    "test_data":{
+	".json":
+	{
+	    "comments": 0,
+	    "code_lines": 24,
+	    "empty_lines": 2,
+	    "files_count": 1,
+	    "types": [".json"],
+	    "errors": []
+	}
+    }
+}
