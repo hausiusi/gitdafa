@@ -46,9 +46,11 @@ class CodeFileAnalyzer:
         if self.extension not in known_types:
             self.type = "other"
             comments = []
+            self.language = "other"
         else:
             self.type = self.extension
             comments = known_types[self.type]["comments"]
+            self.language = known_types[self.type]["language"]
         comment_end = ""
         comment_end_found = True
         self.__analyze_result_add_missing(self.type)
@@ -92,7 +94,7 @@ class CodeFileAnalyzer:
             self.__analyze_result_update_values(self.type, self.comment_lines,
                                                 self.code_lines,
                                                 self.empty_lines,
-                                                self.extension)
+                                                self.extension, self.language)
 
     def __analyze_result_add_missing(self, element):
         ''' Adds to result dict and initializes a key when missing '''
@@ -105,13 +107,16 @@ class CodeFileAnalyzer:
         CodeFileAnalyzer.result[element]["files_count"] = 0
         CodeFileAnalyzer.result[element]["types"] = []
         CodeFileAnalyzer.result[element]["errors"] = []
+        CodeFileAnalyzer.result[element]["language"] = ""
 
     def __analyze_result_update_values(self, file_type, comment_lines,
-                                       code_lines, empty_lines, extension):
+                                       code_lines, empty_lines, extension,
+                                       language):
         CodeFileAnalyzer.result[file_type]["comments"] += comment_lines
         CodeFileAnalyzer.result[file_type]["code_lines"] += code_lines
         CodeFileAnalyzer.result[file_type]["empty_lines"] += empty_lines
         CodeFileAnalyzer.result[file_type]["files_count"] += 1
+        CodeFileAnalyzer.result[file_type]["language"] = language
         if not extension in CodeFileAnalyzer.result[file_type]["types"]:
             CodeFileAnalyzer.result[file_type]["types"].append(extension)
 

@@ -4,49 +4,56 @@
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "C source"
+    "description": "C source",
+    "language": "C"
   },
   ".h": {
     "comments": [
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "C header"
+    "description": "C header",
+    "language": "C"
   },
   ".cpp": {
     "comments": [
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "C++ source"
+    "description": "C++ source",
+    "language": "C++"
   },
   ".hpp": {
     "comments": [
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "C++ header"
+    "description": "C++ header",
+    "language": "C++"
   },
   ".cs": {
     "comments": [
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "C# source"
+    "description": "C# source",
+    "language": "C#"
   },
   ".java": {
     "comments": [
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "Java source"
+    "description": "Java source",
+    "language": "Java"
   },
   ".go": {
     "comments": [
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "Golang source"
+    "description": "Golang source",
+    "language": "Go"
   },
   ".s": {
     "comments": [
@@ -54,14 +61,28 @@
       ["//", "\n"],
       ["/*", "*/"]
     ],
-    "description": "Assembly source"
+    "description": "Assembly source",
+    "language": "Assembly"
   },
   ".asm": {
     "comments": [[";", "\n"]],
-    "description": "Assembly source"
+    "description": "Assembly source",
+    "language": "Aseembly"
   },
-  ".py": { "comments": [["#", "\n"]], "description": "Python source" },
-  ".yml": { "comments": [["#", "\n"]], "description": "Yaml source" },
-  ".md": { "comments": [], "description": "Markdown file" },
-  ".json": { "comments": [], "description": "Json file" }
+  ".py": {
+    "comments": [["#", "\n"]],
+    "description": "Python source",
+    "language": "Python"
+  },
+  ".yml": {
+    "comments": [["#", "\n"]],
+    "description": "Yaml source",
+    "language": "Yaml"
+  },
+  ".md": {
+    "comments": [],
+    "description": "Markdown file",
+    "language": "MarkDown"
+  },
+  ".json": { "comments": [], "description": "Json file", "language": "Json" }
 }
