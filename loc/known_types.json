@@ -69,6 +69,6 @@
 	  ["//", "\n"],
 	  ["/*", "*/"]
       ],
-      "description": "Json file"
+      "description": "Javascript file"
   } 
 }
