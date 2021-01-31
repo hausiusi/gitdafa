@@ -30,4 +30,3 @@ def test_CodeFileAnalyzer():
             fields = file_data['test_data'][tp]
             for field in fields:
                 assert fields[field] == analize.result[tp][field]
-
