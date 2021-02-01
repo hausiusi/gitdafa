@@ -103,7 +103,10 @@ class CodeFileAnalyzer:
         comment_end = ""
         comment_end_found = True
         not_code_line = False
+<<<<<<< HEAD
         self.__analyze_result_add_missing(self.type)
+=======
+>>>>>>> Fix incorrect counting of lines of code
         try:
             for line in open(code_file_path, "r", encoding="utf-8"):
                 line = line.lstrip()
