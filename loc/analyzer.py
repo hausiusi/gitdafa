@@ -102,6 +102,7 @@ class CodeFileAnalyzer:
             comments = known_types[self.type]["comments"]
         comment_end = ""
         comment_end_found = True
+        not_code_line = False
         self.__analyze_result_add_missing(self.type)
         try:
             for line in open(code_file_path, "r", encoding="utf-8"):
@@ -110,7 +111,7 @@ class CodeFileAnalyzer:
                     self.comment_lines += 1
                     if comment_end in line:
                         comment_end_found = True
-                        continue
+                    continue
                 if len(line) == 0:
                     self.empty_lines += 1
                     continue
@@ -119,12 +120,10 @@ class CodeFileAnalyzer:
                     if line.startswith(comment_start):
                         comment_end = comment[1]
                         self.comment_lines += 1
-                        comment_end_found = False
-                        # detect oneliner comments
-                        if comment_end in line:
-                            comment_end_found = True
-                            continue
-                if not comment_end_found:
+                        comment_end_found = comment_end in line
+                        not_code_line = True
+                if not_code_line:
+                    not_code_line = False
                     continue
                 self.code_lines += 1
         except IOError as ex:
