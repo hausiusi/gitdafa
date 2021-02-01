@@ -62,9 +62,9 @@ if __name__ == "__main__":
     file_paths = loc.get_file_names(args.projdir)
     for f in file_paths:
         result = loc.CodeFileAnalyzer(f)
-        print(f"File: {f} code: {result.code_lines}," \
-              "comments: {result.comment_lines}, empty:" \
-              "{result.empty_lines}")
+        print(f"File: {f} code: {result.code_lines},"
+              f"comments: {result.comment_lines}, empty: " \
+              f"{result.empty_lines}")
 
     print(loc.CodeFileAnalyzer.result)
     # change working directory back to saved one

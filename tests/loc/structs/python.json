@@ -4,7 +4,7 @@
 	".py":
 	{
 	    "comments": 3,
-	    "code_lines": 8,
+	    "code_lines": 5,
 	    "empty_lines": 5,
 	    "files_count": 1,
 	    "types": [".py"],
