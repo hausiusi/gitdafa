@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from .model_interafce import TableInterface
 
-class Author:
+
+class Author(TableInterface):
     """
     Model, to reflect commit author properties and function.
 
@@ -28,6 +30,7 @@ class Author:
     add_commit(commit)
     
     """
+
     def __init__(self, name: str = None, email: str = None):
         self.name: str = name
         self.email: str = email
@@ -62,6 +65,12 @@ class Author:
             self.lines_deleted += change.deleted
         self.commits.append(commit)
 
+    def get_table_row(self) -> []:
+        return [self.name, self.email, self.commits_count, self.lines_added, self.lines_deleted]
+
+    def get_table_headers(self) -> []:
+        return ["Name", "Email", "Commits", "Lines added", "Lines deleted"]
+
     def __eq__(self, item):
         if item.email == self.email:
             return True
@@ -70,10 +79,10 @@ class Author:
 
     def __str__(self):
         return f"Name: {self.name}, " + \
-            f"Email: {self.email}, " + \
-            f"Commits: {self.commits_count}"
+               f"Email: {self.email}, " + \
+               f"Commits: {self.commits_count}"
 
     def __repr__(self):
         return f"'name': '{self.name}',  " + \
-            f"'email': '{self.email}', " + \
-            f"'Commits': {self.commits_count}"
+               f"'email': '{self.email}', " + \
+               f"'Commits': {self.commits_count}"

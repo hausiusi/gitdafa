@@ -1,4 +1,3 @@
-from models import Statistics
 from models import Commit
 from models import Author
 from models import Change

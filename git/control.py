@@ -1,4 +1,3 @@
-
 class Cmd:
     """String constants for a git command"""
 
@@ -7,3 +6,11 @@ class Cmd:
     SHORTLOG = "git shortlog -s"
     LOG_STAT = "git log --stat"
     LOG_NUMSTAT = "git log --numstat"
+    LOG_NUMSTAT_SKIP_X_GET_Y = "git log --numstat --skip=%d -%d"
+    TAGS = "git tag -l"
+    REV_PARSE = "git rev-parse %s^{}"
+    SHA_LIST = "git log --pretty=format:%H --no-patch"
+    SHA_LIST_REVERSED = SHA_LIST + " --reverse"
+    BRANCH_TAG_CONTAINS = "git branch -a --contains tags/%s"
+    CURRENT_BRANCH = "git rev-parse --abbrev-ref HEAD"
+    COMMIT_COUNT = "git rev-list --all --count"
