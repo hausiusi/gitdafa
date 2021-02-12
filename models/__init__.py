@@ -1,7 +1,9 @@
-from .statistics import Statistics
 from .author import Author
 from .change import Change
 from .commit import Commit
+from .tag import Tag
+from .model_interafce import TableInterface
+
 """
-Packadge for all gitribution object models
+Package for all gitribution object models
 """

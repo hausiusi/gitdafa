@@ -3,6 +3,7 @@
 
 import subprocess
 import sys
+
 """
 Module provides command running and output handling functionality
 """
@@ -96,12 +97,15 @@ class CmdRunner:
         -------
         CmdOutput
         """
+        if "^" in cmd and sys.platform == "win32":
+            cmd = cmd.replace("^", "^^")
         p = subprocess.Popen(cmd,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
                              universal_newlines=True,
-                             bufsize=8192,
+                             bufsize=16384,
                              encoding="utf-8",
+                             errors="ignore",
                              shell=True)
 
         cmd_output = CmdOutput(cmd, p.communicate())
