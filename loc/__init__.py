@@ -1,4 +1,4 @@
-from .analyzer import *
+from .line_counter import *
 """
-Packadge contains all configuration files in json format amd analyzer module
+Package contains all configuration files in json format amd analyzer module
 """

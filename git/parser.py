@@ -1,4 +1,3 @@
-from models import Commit
 from models import Author
 from models import Change
 import datetime
@@ -187,34 +186,3 @@ class Parse:
                     'commit_cnt': int(parts[0].strip())
                 })
         return authors
-
-    @classmethod
-    def stats(cls, cmd_output):
-        """
-        Get authors and their commits
-        
-        Parameters
-        ----------
-        cmd_output : CmdOutput
-
-        Returns
-        -------
-        Statistics
-        """
-        stats = Statistics()
-        commit_texts = cmd_output.stdout.split("\ncommit ")
-        for commit_text in commit_texts:
-            commit_id = cls.commit_id(commit_text)
-            commit = Commit(commit_id)
-            date = cls.date(commit_text)
-            commit.date = str(date)
-            commit.message = cls.message(commit_text)
-            commit.changes = cls.changes(commit_text)
-            author = cls.author(commit_text)
-
-            if author.email not in stats.authors:
-                stats.authors[author.email] = author
-
-            stats.authors[author.email].add_commit(commit)
-
-        return stats

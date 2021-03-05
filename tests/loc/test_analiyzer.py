@@ -25,7 +25,7 @@ def get_files():
 def test_CodeFileAnalyzer():
     for file_data in get_files():
         sample_path = os.path.join(samples_path, file_data['sample_path'])
-        analize = loc.CodeFileAnalyzer(sample_path)
+        analize = loc.LineCounter(sample_path)
         for tp in file_data['test_data']:
             fields = file_data['test_data'][tp]
             for field in fields:

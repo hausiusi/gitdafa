@@ -13,4 +13,5 @@ class Cmd:
     SHA_LIST_REVERSED = SHA_LIST + " --reverse"
     BRANCH_TAG_CONTAINS = "git branch -a --contains tags/%s"
     CURRENT_BRANCH = "git rev-parse --abbrev-ref HEAD"
-    COMMIT_COUNT = "git rev-list --all --count"
+    COMMIT_COUNT_ALL = "git rev-list --all --count"
+    COMMIT_COUNT_BRANCH = "git rev-list --count HEAD"

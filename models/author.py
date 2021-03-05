@@ -66,10 +66,18 @@ class Author(TableInterface):
         self.commits.append(commit)
 
     def get_table_row(self) -> []:
-        return [self.name, self.email, self.commits_count, self.lines_added, self.lines_deleted]
+        return [self.name,
+                self.email,
+                self.commits_count,
+                self.lines_added,
+                self.lines_deleted]
 
     def get_table_headers(self) -> []:
-        return ["Name", "Email", "Commits", "Lines added", "Lines deleted"]
+        return ["Name",
+                "Email",
+                "Commits",
+                "Lines added",
+                "Lines deleted"]
 
     def __eq__(self, item):
         if item.email == self.email:

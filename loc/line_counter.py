@@ -3,6 +3,9 @@
 
 import json
 import os
+
+from models import CodeFileInfo
+
 """
 Leads all configuration parameters and implements the code file analyzer
  and a function for retrieving file names.
@@ -62,7 +65,7 @@ def ignored_extensions_extend(extensions):
     ignored_extensions.extend(extensions)
 
 
-class CodeFileAnalyzer:
+class LineCounter:
     """
     Analyze code in file
     
@@ -90,88 +93,80 @@ class CodeFileAnalyzer:
     result = {}
 
     def __init__(self, code_file_path: str):
-        _, self.extension = os.path.splitext(code_file_path)
-        self.code_lines = 0
-        self.comment_lines = 0
-        self.empty_lines = 0
-        if self.extension not in known_types:
-            self.type = "other"
-            comments = []
-        else:
-            self.type = self.extension
-            comments = known_types[self.type]["comments"]
+        self.code_file_path = code_file_path
+        self.errors = []
+
+    def count(self) -> CodeFileInfo:
+        _, ext = os.path.splitext(self.code_file_path)
+        file_type = "other"
+        comments = []
+        description = "Unknown"
+        language = "Unknown"
+        if ext in known_types:
+            file_type = ext
+            comments = known_types[file_type]["comments"]
+            description = known_types[file_type]["description"]
+            language = known_types[file_type]["language"]
+        code_lines = 0
+        comment_lines = 0
+        empty_lines = 0
         comment_end = ""
         comment_end_found = True
         not_code_line = False
-<<<<<<< HEAD
-        self.__analyze_result_add_missing(self.type)
-=======
->>>>>>> Fix incorrect counting of lines of code
         try:
-            for line in open(code_file_path, "r", encoding="utf-8"):
+            for line in open(self.code_file_path, 'r', encoding='utf-8', errors='replace'):
                 line = line.lstrip()
                 if not comment_end_found:
-                    self.comment_lines += 1
+                    comment_lines += 1
                     if comment_end in line:
                         comment_end_found = True
                     continue
                 if len(line) == 0:
-                    self.empty_lines += 1
+                    empty_lines += 1
                     continue
                 for comment in comments:
+                    if (len(comment)) < 2:
+                        msg = f'known_types.json->comments must be array of array [["start", "end"]] or empty [].' \
+                              f' Check {ext}'
+                        print(msg)
+                        continue
                     comment_start = comment[0]
                     if line.startswith(comment_start):
                         comment_end = comment[1]
-                        self.comment_lines += 1
+                        comment_lines += 1
                         comment_end_found = comment_end in line
                         not_code_line = True
                 if not_code_line:
                     not_code_line = False
                     continue
-                self.code_lines += 1
+                code_lines += 1
         except IOError as ex:
-            msg = f"Can not open {code_file_path} {ex}"
-            print(msg)
-            CodeFileAnalyzer.result[self.type]["errors"].append(msg)
+            msg = f"Can not open {self.code_file_path} {ex}"
+            self.errors.append(msg)
         except UnicodeDecodeError as ex:
-            msg = "Failed to decode file: {code_file_path} {ex}"
-            print(msg)
-            CodeFileAnalyzer.result[self.type]["errors"].append(msg)
+            msg = f"Failed to decode file: {self.code_file_path} {ex}"
+            self.errors.append(msg)
         except Exception as ex:
-            msg = f"Exception while opening and parsing {code_file_path} {ex}"
-            print(msg)
-            CodeFileAnalyzer.result[self.type]["errors"].append(msg)
+            msg = f"Exception while opening and parsing {self.code_file_path} {ex}"
+            self.errors.append(msg)
         else:
-            self.__analyze_result_update_values(self.type, self.comment_lines,
-                                                self.code_lines,
-                                                self.empty_lines,
-                                                self.extension)
-
-    def __analyze_result_add_missing(self, element):
-        """ Adds to result dict and initializes a key when missing """
-        if element in CodeFileAnalyzer.result:
-            return
-        CodeFileAnalyzer.result[element] = {}
-        CodeFileAnalyzer.result[element]["comments"] = 0
-        CodeFileAnalyzer.result[element]["code_lines"] = 0
-        CodeFileAnalyzer.result[element]["empty_lines"] = 0
-        CodeFileAnalyzer.result[element]["files_count"] = 0
-        CodeFileAnalyzer.result[element]["types"] = []
-        CodeFileAnalyzer.result[element]["errors"] = []
-
-    def __analyze_result_update_values(self, file_type, comment_lines,
-                                       code_lines, empty_lines, extension):
-        CodeFileAnalyzer.result[file_type]["comments"] += comment_lines
-        CodeFileAnalyzer.result[file_type]["code_lines"] += code_lines
-        CodeFileAnalyzer.result[file_type]["empty_lines"] += empty_lines
-        CodeFileAnalyzer.result[file_type]["files_count"] += 1
-        if not extension in CodeFileAnalyzer.result[file_type]["types"]:
-            CodeFileAnalyzer.result[file_type]["types"].append(extension)
+            return CodeFileInfo(self.code_file_path,
+                                language,
+                                file_type,
+                                comment_lines,
+                                code_lines,
+                                empty_lines,
+                                description)
+        finally:
+            for error in self.errors:
+                print(f"ERROR: {error}")
+        return None
 
 
 def get_file_names(root_dir: str):
     """
-    Get all files in specified directories
+    Get all files under the root_dir except files that are placed in the
+    ignored directories or have ignored extensions
     
     Parameters
     ----------
