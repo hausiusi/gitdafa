@@ -1,74 +1,87 @@
 {
-  ".c": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "C source"
-  },
-  ".h": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "C header"
-  },
-  ".cpp": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "C++ source"
-  },
-  ".hpp": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "C++ header"
-  },
-  ".cs": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "C# source"
-  },
-  ".java": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "Java source"
-  },
-  ".go": {
-    "comments": [
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "Golang source"
-  },
-  ".s": {
-    "comments": [
-      ["#", "\n"],
-      ["//", "\n"],
-      ["/*", "*/"]
-    ],
-    "description": "Assembly source"
-  },
-  ".asm": {
-    "comments": [[";", "\n"]],
-    "description": "Assembly source"
-  },
-  ".py": { "comments": [["#", "\n"]], "description": "Python source" },
-  ".yml": { "comments": [["#", "\n"]], "description": "Yaml source" },
-  ".md": { "comments": [], "description": "Markdown file" },
-  ".json": { "comments": [], "description": "Json file" },
-  ".js": {
-      "comments": [
-	  ["//", "\n"],
-	  ["/*", "*/"]
-      ],
-      "description": "Javascript file"
-  } 
+    ".c": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "C source",
+        "language": "C"
+    },
+    ".h": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "C header",
+        "language": "C"
+    },
+    ".cpp": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "C++ source",
+        "language": "C++"
+    },
+    ".hpp": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "C++ header",
+        "language": "C++"
+    },
+    ".cs": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "C# source",
+        "language": "C#"
+    },
+    ".java": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "Java source",
+        "language": "Java"
+    },
+    ".go": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "Golang source",
+        "language": "Go"
+    },
+    ".s": {
+        "comments": [["#", "\n"], ["//", "\n"], ["/*", "*/"]],
+        "description": "Assembly source",
+        "language": "Assembly"
+    },
+    ".asm": {
+        "comments": [[";", "\n"]],
+        "description": "Assembly source",
+        "language": "Assembly"
+    },
+    ".py": {
+        "comments": [["#", "\n"]],
+        "description": "Python source",
+        "language": "Python"
+    },
+    ".yml": {
+        "comments": [["#", "\n"]],
+        "description": "Yaml source",
+        "language": "Yaml"
+    },
+    ".md": {
+        "comments": [],
+        "description": "Markdown file",
+        "language": "Markdown"
+    },
+    ".json": {
+        "comments": [],
+        "description": "Json file",
+        "language": "JSON"
+    },
+    ".js": {
+        "comments": [["//", "\n"], ["/*", "*/"]],
+        "description": "Javascript source",
+        "language": "Javascript"
+    },
+    ".txt": {
+        "comments": [],
+        "description": "Text file",
+        "language": "Plain text"
+    },
+    ".rst": {
+        "comments": [],
+        "description": "Restructured text file",
+        "language": "Formatted text"
+    },
+    ".sh": {
+        "comments": [["#", "\n"]],
+        "description": "Shell script file",
+        "language": "Shell script"
+    }
 }

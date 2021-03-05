@@ -9,7 +9,4 @@ results of git commands, and the control.py git control module for git command s
 """
 
 from .parser import Parse
-from .runner import CmdOutput
-from .runner import CmdRunner
 from .control import Cmd
-from .statistics import Statistics

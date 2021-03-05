@@ -26,7 +26,7 @@ class CmdOutput:
     Attributes
     ---------
     cmd_text : str
-        Command string conatant
+        Command string
     output : list of str
         Command output
     error : list of str
@@ -37,10 +37,10 @@ class CmdOutput:
     Properties
     ----------
     cmd : str
-        Command string conatant
+        Command string
     stdout : list of str
-        Command output
-    stderror : list of str
+        Standard command output
+    stderr : list of str
         Error output
     success : bool
         Command success state
@@ -60,7 +60,7 @@ class CmdOutput:
         return self.output
 
     @property
-    def stderror(self):
+    def stderr(self):
         return self.error
 
     @property
@@ -129,7 +129,7 @@ class CmdRunner:
         if debug:
             print(f"Executed: '{cmd_output.cmd}'")
             print(f"Standard output: '{cmd_output.stdout}'")
-            print(f"Standard error: '{cmd_output.stderror}'")
+            print(f"Standard error: '{cmd_output.stderr}'")
         if not cmd_output.success:
             print(
                 f"Failed to execute: '{cmd_output.cmd}' with error: '{cmd_output.error}'"
