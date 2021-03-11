@@ -54,6 +54,11 @@
         "description": "Yaml source",
         "language": "Yaml"
     },
+    ".yaml": {
+        "comments": [["#", "\n"]],
+        "description": "Yaml source",
+        "language": "Yaml"
+    },
     ".md": {
         "comments": [],
         "description": "Markdown file",
