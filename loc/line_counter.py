@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import sys
 import os
 
 from models import CodeFileInfo
@@ -22,6 +23,7 @@ def __json_load(file_path: str):
 
 ignored_directories = __json_load("loc/ignored_directories.json")
 ignored_extensions = __json_load("loc/ignored_extensions.json")
+ignored_subdirs = __json_load("loc/ignored_subdirs.json")
 known_types = __json_load("loc/known_types.json")
 
 
@@ -178,22 +180,24 @@ def get_file_names(root_dir: str):
         List of file paths
     """
     file_paths = []
+    if sys.platform == 'win32':
+        root_dir = root_dir.replace('/', '\\')
+        sep = '\\'
+    else:
+        sep = '/'
     for root, _, files in os.walk(root_dir):
-        continue_next = False
-        for ign_dir in ignored_directories:
-            extra_char = 0 if root_dir.endswith(("/", "\\")) else 1
-            tmp_dir = root[len(root_dir) + extra_char:].replace("\\", "/")
-            if tmp_dir.startswith(ign_dir):
-                continue_next = True
+        not_subdir = True
+        splitdirs = root.split(sep)
+        if splitdirs[0].strip('.') == '':
+            first_dir = splitdirs[1]
+        else:
+            first_dir = splitdirs[0]
+        for sp_dir in splitdirs:
+            if sp_dir in ignored_subdirs:
+                not_subdir = False
                 break
-        if continue_next:
-            continue
-        for f in files:
-            continue_next = False
-            _, ext = os.path.splitext(f)
-            if ext.lower() in ignored_extensions:
-                continue_next = True
-            if continue_next:
-                continue
-            file_paths.append(os.path.join(root, f))
+        if first_dir not in ignored_directories and not_subdir:
+            for f in files:
+                if os.path.splitext(f)[-1] not in ignored_extensions:
+                    file_paths.append(os.path.join(root, f))
     return file_paths
