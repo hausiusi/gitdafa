@@ -1,0 +1,92 @@
+commit c872f49676583a4bea391756e45ccf5e899f2c52
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Sat Mar 13 23:25:46 2021 +0100
+
+    tmp
+
+13	9	statistics.py
+8	0	tests/git/test_statistics.py
+
+commit c365048d493dc3e864c284d4000cdff9ca406928
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Sat Mar 13 18:23:21 2021 +0100
+
+    tests: bug: module import fails
+    
+    This patch solves the name conflict when running py.test outside venv.
+    Renamed package: cmd/ -> _cmd/
+    
+    The error output without this fix:
+    
+    Hint: make sure your test modules/packages have valid Python
+    names.
+    Traceback:
+    C:\Program
+    Files\WindowsApps\PythonSoftwareFoundation.Python.3.8_3.8.2288.0_x64__
+    qbz5n2kfra8p0\lib\importlib\__init__.py:127:
+    in import_module
+        return _bootstrap._gcd_import(name[level:], package, level)
+        tests\git\test_parser.py:6: in <module>
+            import data_strings as ts
+            tests\git\data_strings.py:11: in <module>
+                from cmd import CmdOutput
+                E   ImportError: cannot import name 'CmdOutput' from 'cmd'
+                (C:\Program Files\WindowsApps\PythonSoftwareFoundation.
+                Python.3.8_3.8.2288.0_x64__qbz5n2kfra8p0\lib\cmd.py)
+    
+    Closes #69
+
+0	0	{cmd => _cmd}/__init__.py
+0	0	{cmd => _cmd}/runner.py
+1	1	statistics.py
+
+commit 7455ed4d64b7c1c6dae0c062409650959405fec5
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Mar 5 22:51:34 2021 +0100
+
+    Move files, improve outputs and refactor
+    
+    Statistics class is intended for not only git but for every type of
+    statistics. Hence, it is moved outside and now it provides statistics
+    also about LOC (lines of code).
+    Closes #57
+    
+    Abovementioned change also simplified tha approach of argument
+    parsing and is possible to retrieve any combination of statistics
+    with shorter, consistent and simpler way.
+    Closes #59
+    
+    Runner class is intented for not only git but for general usage. Hence
+    it is moved in separated folder.
+    Closes #61
+    
+    loc/analyzer.py is intended just for line counting (code, comments,
+    empty). Hence, the name is changed to LineCounter and the analyze
+    function is renamed to count.
+    Closes #63
+    
+    Removed implicit arguments and wildcard imports
+    Closes #55
+    
+    Added possibility to combine different extensions in one programming
+    language and improved loc output
+    Closes #36
+
+2	0	cmd/__init__.py
+6	6	{git => cmd}/runner.py
+0	3	git/__init__.py
+2	1	git/control.py
+0	32	git/parser.py
+0	120	git/statistics.py
+2	2	loc/__init__.py
+1	1	loc/ignored_directories.json
+85	72	loc/known_types.json
+50	55	loc/{analyzer.py => line_counter.py}
+2	0	models/__init__.py
+10	2	models/author.py
+49	0	models/code_file_info.py
+52	0	models/language_stats.py
+75	28	run.py
+238	0	statistics.py
+1	1	tests/loc/test_analiyser.py
+1	1	tests/loc/test_analiyzer.py

@@ -3,12 +3,11 @@ import sys
 import json
 import os
 
-#print(os.popen('pwd').read())
 sys.path.append("./")
 
 from models import Author
 from models import Change
-from git import CmdOutput
+from _cmd import CmdOutput
 
 PARRENT_DIR = './tests/git/'
 

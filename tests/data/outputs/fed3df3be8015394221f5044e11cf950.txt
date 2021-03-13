@@ -1,0 +1,33 @@
+commit 06f00d8d34708c98395826e7201807d2176b3054
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 10:55:25 2020 +0200
+
+    List repo authors and commits per contributor
+    
+    Closes #3
+    Closes #8
+
+2	0	models/__init__.py
+9	0	models/author.py
+7	0	models/statistics.py
+39	5	run.py
+
+commit 4e9afeb85b03bcecaee589c701e463ee0091cfbf
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 10:53:52 2020 +0200
+
+    Update gitignore
+    
+    Ignoring .vscode folder from editor
+
+2	1	.gitignore
+
+commit 7532bd43ff1216871d1c9554839e0e09ae7ffeef
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Thu Aug 27 22:13:56 2020 +0200
+
+    Format code according to yapf
+    
+    Closes #13
+
+7	3	cmd_runner.py

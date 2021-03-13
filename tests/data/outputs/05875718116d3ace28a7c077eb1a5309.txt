@@ -1,0 +1,49 @@
+commit 8173aba7caaaa5ffb04a78ef5e2809abaf50452d
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Mon Feb 1 22:16:26 2021 +0100
+
+    Fix incorrect counting of lines of code
+
+3	0	loc/analyzer.py
+
+commit 4cd78f80e6450bbd42ce30c4d4ba3e018f2922ad
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Mon Dec 28 01:35:42 2020 +0400
+
+    Add unit tests and fix bugs
+    
+    Closes #31
+    Add unit test to:
+    -parser.py - git
+    -runner.py - git
+    -analyzer.py - loc
+    
+    Closes #45
+    
+    Fixed the Author and Change object equality error.
+    Fixed warning (DeprecationWarning: invalid escape sequence \d) in parser.py,
+    with using raw string instead of unicode.
+
+61	65	git/parser.py
+33	0	tests/loc/test_analiyser.py
+
+commit 7881c7c6ba1cc76bbc90efeb0f3c307caa7555d6
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Mon Dec 28 01:35:42 2020 +0400
+
+    Add unit tests and fix bugs
+    
+    Closes #31
+    Add unit test to:
+    -parser.py - git
+    -runner.py - git
+    -analyzer.py - loc
+    -models - package
+    
+    Closes #45
+    
+    Fixed the Author and Change object equality error.
+    Fixed warning (DeprecationWarning: invalid escape sequence \d) in parser.py,
+    with using raw string instead of unicode.
+
+0	0	tests/loc/test_analiyser.py

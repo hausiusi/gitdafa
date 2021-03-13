@@ -1,0 +1,59 @@
+commit d7f93d30419c6555fd1c04ad32a19ac3ef8430f0
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Fri Sep 4 15:13:10 2020 +0400
+
+    Refactor run.py and add git package
+    
+    * Add git package
+    * Move git command constants to git/control module
+    * Move parsing related functions to git/parser module
+    * Move cmd_runner module into a git package and rename to runner
+    * Refactor run.py file
+    
+    Closes #29
+    Closes #19
+    Closes #16
+
+7	0	git/__init__.py
+13	0	git/control.py
+113	0	git/parser.py
+7	4	cmd_runner.py => git/runner.py
+4	4	models/__init__.py
+4	1	models/change.py
+5	1	models/commit.py
+10	110	run.py
+
+commit 28f481e29d4d6a3f58d85d5a232d2d13252c0ceb
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Fri Aug 28 16:16:59 2020 +0400
+
+    Add models and parse commits
+    
+    * Added object str representation for CmdOutput
+    * Added Change and Commit model in models
+    * Refactored all models
+    * Added "git show" parsing functions
+    * Added attributes in the Author class, to count all added and deleted lines (Closes #5)
+    
+    Closes #22
+
+2	0	cmd_runner.py
+2	0	models/__init__.py
+36	4	models/author.py
+13	0	models/change.py
+16	0	models/commit.py
+7	1	models/statistics.py
+108	3	run.py
+
+commit f0a2b7fcb1a050f3db9d833501d61c478c7ebe9d
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 23:52:52 2020 +0200
+
+    Fix some commands fail on Windows from runner
+    
+    The reason was encoding: some stdoutputs were in different encoding and
+    seems subprocess was not managing to handle
+    
+    Closes #25
+
+3	0	cmd_runner.py

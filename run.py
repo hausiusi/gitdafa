@@ -8,7 +8,7 @@ import sys
 from datetime import datetime
 
 import loc
-from statistics import Statistics
+from census import Statistics
 
 # help
 EPILOG = """\

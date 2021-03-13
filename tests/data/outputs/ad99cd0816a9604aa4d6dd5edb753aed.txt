@@ -1,0 +1,58 @@
+commit e5957174a5350443f9c4a83639dbda8c8adbe364
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Sat Oct 31 17:24:08 2020 +0400
+
+    Add docstring
+    
+    Add a basic docstring to all modules
+    
+    Closes #38
+
+7	0	git/__init__.py
+0	4	git/control.py
+117	5	git/parser.py
+73	0	git/runner.py
+3	0	loc/__init__.py
+64	1	loc/analyzer.py
+3	0	models/__init__.py
+39	1	models/author.py
+19	2	models/change.py
+24	1	models/commit.py
+3	0	models/statistics.py
+
+commit ef1db7a35e6a2eb8698e687391321f0772ce004e
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Tue Oct 13 00:23:48 2020 +0200
+
+    fix error must be put into dict earlier
+
+4	4	loc/analyzer.py
+
+commit ec378669ad77640982d45ae2c463ff6f91bee41a
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Aug 28 23:56:51 2020 +0200
+
+    Count lines of code from files
+    
+    Implemented a basic code line counter. Can distinguish several language
+    files and successfully count empty, code and comment lines.
+    
+    Closes #4
+    
+    Can ignore some file extensions and directories.
+    File extensions and directories can be reset or/and appended using
+    optional arguments, hence, can be ignored some directories. e.g. when
+    they are third party and user wants to count only own code lines.
+    
+    Example of usage: python3 run.py -p pat_to_project_root_dir --igndir
+    dir1_to_ignore dir2_to_ignore dirn_to_ignore --ignext ext1_to_ignore
+    ext2_to_ignore extn_to_ignore
+    
+    Closes #9
+
+1	0	loc/__init__.py
+139	0	loc/analyzer.py
+1	0	loc/ignored_directories.json
+1	0	loc/ignored_extensions.json
+67	0	loc/known_types.json
+21	1	run.py

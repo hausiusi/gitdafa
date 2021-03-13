@@ -1,0 +1,39 @@
+commit 6fe53d10d79fbbbd2453f583256aa23a28cdeef4
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Sat Oct 31 17:24:08 2020 +0400
+
+    Add docstring
+    
+    Add a basic docstring to all modules
+    
+    Closes #38
+
+65	61	git/parser.py
+
+commit eeead80d0789a332ff77dab1ac998e3e51d1d31d
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Mon Feb 1 22:16:26 2021 +0100
+
+    Fix incorrect counting of lines of code
+    
+    LOC was counting code lines incorrectly. The bug is fixed and also test
+    files are updated.
+    
+    Closes #54
+
+6	7	loc/analyzer.py
+3	3	run.py
+4	0	tests/loc/samples/clang.c
+2	2	tests/loc/structs/clang.json
+1	1	tests/loc/structs/python.json
+1	1	tests/loc/structs/script.json
+
+commit b6fa4fa8e851ed11f4b2c583bac4cf908fa2e0ed
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Feb 12 19:07:24 2021 +0100
+
+    Make CmdRunner test Windows compatible
+    
+    Closes #53
+
+8	4	tests/git/test_runner.py
