@@ -1,0 +1,67 @@
+commit d5de9a830ab7c370d6d5017597152245e7961565
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Mon Feb 1 01:44:19 2021 +0400
+
+    Change .gitignore file.
+    
+    Deleted  the *.log file ignore case in the .gitignore
+    
+    Closes# 31
+
+0	6	.gitignore
+1	1	loc/known_types.json
+0	1	tests/loc/{test_analiyser.py => test_analiyzer.py}
+
+commit 28fe04f9b67807b62048bbadc711faac688ecb5f
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Mon Dec 28 01:35:42 2020 +0400
+
+    Add unit tests and fix bugs
+    
+    Closes #31
+    Add unit test to:
+    -parser.py - git
+    -runner.py - git
+    -analyzer.py - loc
+    -models - package
+    
+    Closes #45
+    
+    Fixed the Author and Change object equality error.
+    Fixed warning (DeprecationWarning: invalid escape sequence \d) in parser.py,
+    with using raw string instead of unicode.
+
+5	5	git/parser.py
+8	1	loc/known_types.json
+1	1	models/author.py
+7	0	models/change.py
+10	0	requirements.txt
+76	0	tests/git/data_strings.py
+1	0	tests/git/stats.json
+224	0	tests/git/test_commit.log
+45	0	tests/git/test_parser.py
+16	0	tests/git/test_runner.py
+11	0	tests/loc/samples/clang.c
+26	0	tests/loc/samples/json.json
+13	0	tests/loc/samples/python.py
+15	0	tests/loc/samples/script.js
+15	0	tests/loc/structs/clang.json
+14	0	tests/loc/structs/json.json
+15	0	tests/loc/structs/python.json
+13	0	tests/loc/structs/script.json
+33	0	tests/loc/test_analiyser.py
+0	0	tests/models/test_models.py
+0	0	tests/test_gitribution.py
+
+commit f8dc6e6b5c5884f95804643c6bea8aa66fd32d4f
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Tue Dec 1 00:05:09 2020 +0400
+
+    Refactor and modify parser
+    
+    Optimize the parser.py using regex methods.
+    
+    Closes #43
+
+56	60	git/parser.py
+8	8	run.py

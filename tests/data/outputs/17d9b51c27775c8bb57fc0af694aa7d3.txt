@@ -1,0 +1,37 @@
+commit 9bdf88f26fa35b133835011d83256270760e3be9
+Author: SaturnR <iraklisivsivadze@gmail.com>
+Date:   Fri Aug 28 01:04:58 2020 +0400
+
+    Add requirements.txt
+    
+    Closes #12
+
+0	0	requirements.txt
+
+commit 15e9b586397a3e9e10a2ce6b7e0e40405efe6686
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Tue Aug 25 21:30:54 2020 +0200
+
+    Implement a basic runner for subprocess
+    
+    The patch provides class for running and verifying the command
+    automatically. It returns standard output and standard error with
+    success property to distinguish if the last command run failed when
+    exit_on_fail is False.
+    
+    Closes #2
+
+53	0	cmd_runner.py
+12	0	run.py
+
+commit 580b36c32dd54e5c416fff12d2078fb8361f313b
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Mon Aug 24 23:24:08 2020 +0200
+
+    Initial commit
+    
+    Add python.gitignore
+    
+    Closes #1
+
+141	0	.gitignore

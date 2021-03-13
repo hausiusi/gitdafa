@@ -18,14 +18,18 @@ class Statistics(object):
     """
     Takes care of all types of statistical analysis
     """
-    def __init__(self, root_dir, parse_step_len: int = 20000):
+    def __init__(self,
+                 root_dir,
+                 parse_step_len: int = 20000,
+                 runner=CmdRunner):
+        self.runner = runner
         self.authors = AuthorsCollection()
         self.tags = TagsCollection()
         self.language_stats = LanguageStatsCollection()
         self.code_file_infos = CodeFileInfoCollection()
-        self.branch: str = CmdRunner.run(Cmd.CURRENT_BRANCH).stdout
+        self.branch: str = self.runner.run(Cmd.CURRENT_BRANCH).stdout
         self.commits_count: int = int(
-            CmdRunner.run(Cmd.COMMIT_COUNT_BRANCH).stdout)
+            self.runner.run(Cmd.COMMIT_COUNT_BRANCH).stdout)
         self.parse_step_len: int = int(parse_step_len)
         self.root_dir: str = root_dir
         self.errors: list = []
@@ -34,8 +38,8 @@ class Statistics(object):
         self.authors.collection_creation_start()
         for i in range(0, self.commits_count, self.parse_step_len):
             current_step = min(self.parse_step_len, self.commits_count - i)
-            cmd_output = CmdRunner.run(Cmd.LOG_NUMSTAT_SKIP_X_GET_Y %
-                                       (i, current_step))
+            cmd_output = self.runner.run(Cmd.LOG_NUMSTAT_SKIP_X_GET_Y %
+                                         (i, current_step))
             commit_texts = cmd_output.stdout.split("\ncommit ")
             for commit_text in commit_texts:
                 commit_id = Parse.commit_id(commit_text)
@@ -68,18 +72,18 @@ class Statistics(object):
 
     def parse_tags(self):
         self.tags.collection_creation_start()
-        cmd_output = CmdRunner.run(Cmd.TAGS)
+        cmd_output = self.runner.run(Cmd.TAGS)
         tag_lines = cmd_output.stdout.splitlines()
         if len(tag_lines) == 1:
             pass
 
-        all_sha = "000000\n" + CmdRunner.run(Cmd.SHA_LIST_REVERSED).stdout
+        all_sha = "000000\n" + self.runner.run(Cmd.SHA_LIST_REVERSED).stdout
         tag_id = 0
         # take the first our custom commit sha in the beginning
         previous_tag_commit_sha = all_sha[:all_sha.index('\n')]
         for line in tag_lines:
             name = line
-            sha = CmdRunner.run(Cmd.REV_PARSE % name).stdout
+            sha = self.runner.run(Cmd.REV_PARSE % name).stdout
             matches = re.findall(f'{previous_tag_commit_sha}.*{sha}', all_sha,
                                  re.DOTALL)
             if len(matches) == 0:
@@ -87,7 +91,7 @@ class Statistics(object):
                 matches = re.findall(f'{sha}.*{previous_tag_commit_sha}',
                                      all_sha, re.DOTALL)
             if len(matches) == 0:
-                branch_containing_tag = CmdRunner.run(
+                branch_containing_tag = self.runner.run(
                     Cmd.BRANCH_TAG_CONTAINS % name, exit_on_fail=False).stdout
                 if branch_containing_tag == "":
                     print(f'ERROR: TAG {name} couldn\'t find on any branch')

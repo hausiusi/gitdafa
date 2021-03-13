@@ -1,0 +1,53 @@
+{
+  "total_commits": 27,
+  "parse_authors": {
+    "authors_by_email": {
+      "iraklisivsivadze@gmail.com": {
+        "author": "SaturnR",
+        "commits_count": 10,
+        "lines_added": 1471,
+        "lines_deleted": 351
+      },
+      "hausiusi@gmail.com": {
+        "author": "Zviad Mgaloblishvili",
+        "commits_count": 17,
+        "lines_added": 1378,
+        "lines_deleted": 423
+      }
+    }
+  },
+    "count_lines": {
+      "languages": {
+        "C": {
+          "code_lines": 5,
+          "comment_lines": 6,
+          "empty_lines": 4,
+          "files_count": 1
+        },
+        "JSON": {
+          "code_lines": 24,
+          "comment_lines": 0,
+          "empty_lines": 2,
+          "files_count": 1
+        },
+        "Python": {
+          "code_lines": 5,
+          "comment_lines": 3,
+          "empty_lines": 5,
+          "files_count": 1
+        },
+        "Javascript": {
+          "code_lines": 11,
+          "comment_lines": 1,
+          "empty_lines": 3,
+          "files_count": 1
+        },
+        "Plain text": {
+          "code_lines": 9,
+          "comment_lines": 0,
+          "empty_lines": 4,
+          "files_count": 4
+        }
+      }
+    }
+}

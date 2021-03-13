@@ -3,7 +3,6 @@
 
 import subprocess
 import sys
-
 """
 Module provides command running and output handling functionality
 """

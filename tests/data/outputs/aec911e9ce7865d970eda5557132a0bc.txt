@@ -1,0 +1,59 @@
+commit 83f63a25d17c70bf60fc10649fc578a8e2b5a5db
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Feb 12 01:05:58 2021 +0100
+
+    Get commits per tag, total commits and better UI
+    
+    Structural updates. A lot of improvements and functional enhancements:
+    
+    * Changed structure of git and models packages in order to simplify its
+    usage, make more flexible for changes and enhanceable.
+    * Added tag count and commits per tag.
+    * During initialization Statistics class counts total number of commits
+    (actually it takes a while for big repositories, but later it simplifies
+    time estimation and percentage calculation for other functions).
+    * Improved printing in user interface, now it prints tables of authors
+    with their statistical data: added, deleted lines and their total
+    commits count.
+    * In the end the results are saved as text (with tables) like
+    ./results/<program_run_date_project_dir>/stats.txt.
+    * Created and applied TableInterface metaclass for those objects that
+    have to displayed as tables (for this purpose we need to be guaranteed
+    that two functions: get_table_row and get_table_headers will be
+    available in the object. Currently Author and Tag objects use this
+    interface as they are the only ones that are stringified as a table.
+    
+    Closes #30
+    Closes #10
+    Closes #50
+
+1	0	git/__init__.py
+8	1	git/control.py
+0	1	git/parser.py
+5	1	git/runner.py
+120	0	git/statistics.py
+4	2	models/__init__.py
+14	5	models/author.py
+24	0	models/model_interafce.py
+0	16	models/statistics.py
+34	0	models/tag.py
+22	30	run.py
+
+commit ed08123e257635c6f0ebec9e46d2b5eb706b6862
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Feb 12 01:05:30 2021 +0100
+
+    Update requirements
+
+4	0	requirements.txt
+
+commit 5a4c0e7d79b5a1798a1f35871afa29ade0e53458
+Author: Zviad Mgaloblishvili <hausiusi@gmail.com>
+Date:   Fri Feb 12 00:29:04 2021 +0100
+
+    Ignore pycharm's and project specific paths
+    
+    Results will go under ./results/ directory, ignoring it as a
+    "Project specific dicrecotry"
+
+7	1	.gitignore

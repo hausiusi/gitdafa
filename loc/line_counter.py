@@ -30,7 +30,7 @@ def ignored_directories_clear():
     Clear ignored directories dictionary
     """
     global ignored_directories
-    ignored_directories = {}
+    ignored_directories = []
 
 
 def ignored_extensions_clear():
@@ -38,7 +38,7 @@ def ignored_extensions_clear():
     Clear ignored extensions dictionary
     """
     global ignored_extensions
-    ignored_extensions = {}
+    ignored_extensions = []
 
 
 def ignored_directories_extend(directories):
@@ -98,6 +98,7 @@ class LineCounter:
 
     def count(self) -> CodeFileInfo:
         _, ext = os.path.splitext(self.code_file_path)
+        ext = ext.lower()
         file_type = "other"
         comments = []
         description = "Unknown"

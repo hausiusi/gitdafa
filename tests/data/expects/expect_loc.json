@@ -1,0 +1,58 @@
+{
+  "clang.c": {
+    "comment_lines": 6,
+    "code_lines": 5,
+    "empty_lines": 4,
+    "file_ext": ".c",
+    "language": "C"
+  },
+  "json.json": {
+    "comment_lines": 0,
+    "code_lines": 24,
+    "empty_lines": 2,
+    "file_ext": ".json",
+    "language": "JSON"
+  },
+  "python.py": {
+    "comment_lines": 3,
+    "code_lines": 5,
+    "empty_lines": 5,
+    "file_ext": ".py",
+    "language": "Python"
+  },
+  "script.js": {
+    "comment_lines": 1,
+    "code_lines": 11,
+    "empty_lines": 3,
+    "file_ext": ".js",
+    "language": "Javascript"
+  },
+  "foo.txt": {
+    "comment_lines": 0,
+    "code_lines": 5,
+    "empty_lines": 4,
+    "file_ext": ".txt",
+    "language": "Plain text"
+  },
+  "baz1.txt": {
+    "comment_lines": 0,
+    "code_lines": 1,
+    "empty_lines": 0,
+    "file_ext": ".txt",
+    "language": "Plain text"
+  },
+  "baz2.txt": {
+    "comment_lines": 0,
+    "code_lines": 2,
+    "empty_lines": 0,
+    "file_ext": ".txt",
+    "language": "Plain text"
+  },
+  "bar.TXT": {
+    "comment_lines": 0,
+    "code_lines": 1,
+    "empty_lines": 0,
+    "file_ext": ".txt",
+    "language": "Plain text"
+  }
+}
