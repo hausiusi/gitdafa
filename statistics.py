@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from cmd import CmdRunner
+from _cmd import CmdRunner
 from git import Parse
 from git import Cmd
 from models import Commit, LanguageStats
