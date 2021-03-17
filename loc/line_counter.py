@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import sys
 import os
 
 from models import CodeFileInfo
@@ -22,6 +23,7 @@ def __json_load(file_path: str):
 
 ignored_directories = __json_load("loc/ignored_directories.json")
 ignored_extensions = __json_load("loc/ignored_extensions.json")
+ignored_subdirs = __json_load("loc/ignored_subdirs.json")
 known_types = __json_load("loc/known_types.json")
 
 
@@ -32,6 +34,12 @@ def ignored_directories_clear():
     global ignored_directories
     ignored_directories = []
 
+def ignored_subdirectories_clear():
+    """
+    Clear ignored subdirs dictionary
+    """
+    global ignored_subdirs
+    ignored_subdirs = []
 
 def ignored_extensions_clear():
     """
@@ -63,6 +71,18 @@ def ignored_extensions_extend(extensions):
     """
     global ignored_extensions
     ignored_extensions.extend(extensions)
+
+
+def ignored_subdirectories_extend(subdirs):
+    """
+    Extend ignored_subdirs dictionary
+    
+    Parameters
+    ----------
+    subdirs : dict
+    """
+    global ignored_subdirs
+    ignored_subdirs.extend(subdirs)
 
 
 class LineCounter:
@@ -179,22 +199,32 @@ def get_file_names(root_dir: str):
         List of file paths
     """
     file_paths = []
+    global ignored_extensions
+    global ignored_directories 
+    ignored_extensions = [e.lower() for e in ignored_extensions]
+    if sys.platform == 'win32':
+        _sep = '/'
+        sep = '\\'
+    else:
+        _sep = '\\'
+        sep = '/'
+    root_dir = root_dir.replace(_sep, sep)
+    ignored_directories = [igd.replace(_sep, sep) for igd in ignored_directories]
     for root, _, files in os.walk(root_dir):
-        continue_next = False
-        for ign_dir in ignored_directories:
-            extra_char = 0 if root_dir.endswith(("/", "\\")) else 1
-            tmp_dir = root[len(root_dir) + extra_char:].replace("\\", "/")
-            if tmp_dir.startswith(ign_dir):
-                continue_next = True
+        check_dir = True
+        split_dirs = os.path.relpath(root, root_dir).split(sep)
+        for sp_dir in split_dirs:
+            if sp_dir in ignored_subdirs:
+                check_dir = False
                 break
-        if continue_next:
-            continue
-        for f in files:
-            continue_next = False
-            _, ext = os.path.splitext(f)
-            if ext.lower() in ignored_extensions:
-                continue_next = True
-            if continue_next:
-                continue
-            file_paths.append(os.path.join(root, f))
+        add_files = True
+        if check_dir:
+            for ignored_dir in ignored_directories:
+                if ignored_dir in root:
+                    add_files = False
+                    break
+            if add_files:
+                for f in files:
+                    if os.path.splitext(f)[-1].lower() not in ignored_extensions:
+                        file_paths.append(os.path.join(root, f))
     return file_paths
