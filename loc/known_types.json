@@ -88,5 +88,21 @@
         "comments": [["#", "\n"]],
         "description": "Shell script file",
         "language": "Shell script"
+    },
+    ".bb": {
+        "comments": [["#", "\n"]],
+        "description": "Bitbake file",
+        "language": "Bitbake"
+    },
+    ".bbclass": {
+        "comments": [["#", "\n"]],
+        "description": "Bitbake class",
+        "language": "Bitbake"
+    },
+    ".bbappend": {
+        "comments": [["#", "\n"]],
+        "description": "Bitbake append file",
+        "language": "Bitbake"
     }
 }
+
