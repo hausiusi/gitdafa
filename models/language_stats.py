@@ -13,6 +13,10 @@ class LanguageStats(TableInterface):
         self.comment_lines: int = 0
         self.empty_lines: int = 0
         self.files_count: int = 0
+        self.extensions_found: list = []
+        self.ratio_code: float = 0
+        self.ratio_code_comments: float = 0
+        self.ratio_total_lines: float = 0
 
     def add_code_file_info(self, code_file_info: CodeFileInfo):
         """
@@ -35,6 +39,8 @@ class LanguageStats(TableInterface):
         self.code_lines += code_file_info.code_lines
         self.comment_lines += code_file_info.comment_lines
         self.empty_lines += code_file_info.empty_lines
+        if code_file_info.file_ext not in self.extensions_found:
+            self.extensions_found.append(code_file_info.file_ext)
         self.files_count += 1
 
     def get_table_row(self) -> []:
@@ -42,11 +48,19 @@ class LanguageStats(TableInterface):
                 self.code_lines,
                 self.comment_lines,
                 self.empty_lines,
-                self.files_count]
+                self.files_count,
+                self.ratio_code,
+                self.ratio_code_comments,
+                self.ratio_total_lines,
+                self.extensions_found]
 
     def get_table_headers(self) -> []:
         return ["Language",
                 "Code lines",
                 "Comment lines",
                 "Empty lines",
-                "Files count"]
+                "Files count",
+                "code%",
+                "code+comments%",
+                "total%",
+                "Extensions found"]
