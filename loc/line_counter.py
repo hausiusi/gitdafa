@@ -119,15 +119,13 @@ class LineCounter:
     def count(self) -> CodeFileInfo:
         _, ext = os.path.splitext(self.code_file_path)
         ext = ext.lower()
-        file_type = "other"
         comments = []
         description = "Unknown"
         language = "Unknown"
         if ext in known_types:
-            file_type = ext
-            comments = known_types[file_type]["comments"]
-            description = known_types[file_type]["description"]
-            language = known_types[file_type]["language"]
+            comments = known_types[ext]["comments"]
+            description = known_types[ext]["description"]
+            language = known_types[ext]["language"]
         code_lines = 0
         comment_lines = 0
         empty_lines = 0
@@ -173,7 +171,7 @@ class LineCounter:
         else:
             return CodeFileInfo(self.code_file_path,
                                 language,
-                                file_type,
+                                ext,
                                 comment_lines,
                                 code_lines,
                                 empty_lines,

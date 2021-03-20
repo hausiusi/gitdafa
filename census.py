@@ -18,6 +18,7 @@ class Statistics(object):
     """
     Takes care of all types of statistical analysis
     """
+
     def __init__(self,
                  root_dir,
                  parse_step_len: int = 20000,
@@ -135,6 +136,7 @@ class Statistics(object):
             percents = self.__get_progress_in_percents(0, current, files_count)
             print(f'{current}/{files_count} files checked ({percents}%)',
                   end='\r')
+
         self.language_stats.collection_creation_end()
         return self
 
@@ -235,6 +237,32 @@ class TagsCollection(TimedCollectionBase):
 class LanguageStatsCollection(TimedCollectionBase):
     def __init__(self):
         super().__init__('LanguageStats')
+
+    def collection_creation_end(self):
+        total_lines = 0
+        total_code = 0
+        total_code_comments = 0
+        for language in self.collection:
+            lang = self.collection[language]
+            total_lines += lang.code_lines + lang.comment_lines + lang.empty_lines
+            total_code += lang.code_lines
+            total_code_comments += lang.code_lines + lang.comment_lines
+
+        for language in self.collection:
+            lang = self.collection[language]
+            lang.ratio_code = self.__get_ratio_in_percents(
+                lang.code_lines, total_code)
+            lang.ratio_code_comments = self.__get_ratio_in_percents(
+                lang.code_lines + lang.comment_lines, total_code_comments)
+            lang.ratio_total_lines = self.__get_ratio_in_percents(
+                lang.code_lines + lang.comment_lines + lang.empty_lines, total_lines)
+        super().collection_creation_end()
+
+    @staticmethod
+    def __get_ratio_in_percents(current, total, precision=3):
+        ratio = current / total
+        percents = round(ratio * 100, precision)
+        return min(percents, 100)
 
 
 class CodeFileInfoCollection(TimedCollectionBase):
