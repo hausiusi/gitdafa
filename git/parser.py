@@ -70,8 +70,6 @@ class Parse:
         """
         name = None
         email = None
-        #print('-------')
-
         result = re.findall(r"Author:.*", text)
         if len(result) == 0:
             return None

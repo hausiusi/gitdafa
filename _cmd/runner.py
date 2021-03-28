@@ -3,6 +3,7 @@
 
 import subprocess
 import sys
+import asyncio
 """
 Module provides command running and output handling functionality
 """
@@ -11,14 +12,14 @@ Module provides command running and output handling functionality
 class CmdOutput:
     """
     CmdOutput(cmd_text, *output)
-    
+
     Object for storing git command output
-    
+
     Parameters
     ----------
     cmd_text : str
-        Command string conatant
-    
+        Command string constant
+
     *output : argv
         Command output parameters
 
@@ -73,25 +74,28 @@ class CmdOutput:
 class CmdRunner:
     """
     Functions for running and diplaying git command results
-    
+
     Methods
     -------
     run(cmd, debug=False, exit_on_fail=True)
         Run git command in a subprocess and return a result
     verify(cmd_output: CmdOutput, debug: bool, exit_on_fail: bool)
-        Display command output with formatted way and verify command 
+        Display command output with formatted way and verify command
         success status.
     """
+
+    cmd_outs = {}
+
     @classmethod
     def run(cls, cmd, debug=False, exit_on_fail=True):
         """
         Parameters
         ----------
-        cmd : str 
-            Command text  
+        cmd : str
+            Command text
         debug : bool, optional
         exit_on_fail : bool, optional
-        
+
         Returns
         -------
         CmdOutput
@@ -112,6 +116,37 @@ class CmdRunner:
         return cmd_output
 
     @classmethod
+    async def async_run(cls, cmd_id, cmd, debug=False, exit_on_fail=True):
+        """
+        Parameters
+        ----------
+        cmd : str
+            Command text
+        debug : bool, optional
+        exit_on_fail : bool, optional
+
+        Returns
+        -------
+        CmdOutput
+        """
+        if "^" in cmd and sys.platform == "win32":
+            cmd = cmd.replace("^", "^^")
+        proc = await asyncio.create_subprocess_shell(
+            cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            shell=True)
+
+        stdout, stderr = await proc.communicate()
+        cmd_out = {
+            'stdout': stdout.decode(encoding='utf8'),
+            'stderr': stderr.decode(encoding='utf8'),
+            'proc_ret_code': proc.returncode,
+            'cmd': cmd
+        }
+        cls.cmd_outs[cmd_id] = cmd_out
+
+    @classmethod
     def verify(cls, cmd_output: CmdOutput, debug: bool, exit_on_fail: bool):
         """
         Parameters
@@ -119,7 +154,7 @@ class CmdRunner:
         cmd_output : CmdOutput
         debug : bool, optional
         exit_on_fail : bool, optional
-        
+
         Returns
         -------
         bool
@@ -130,9 +165,8 @@ class CmdRunner:
             print(f"Standard output: '{cmd_output.stdout}'")
             print(f"Standard error: '{cmd_output.stderr}'")
         if not cmd_output.success:
-            print(
-                f"Failed to execute: '{cmd_output.cmd}' with error: '{cmd_output.error}'"
-            )
+            print(f"Failed to execute: '{cmd_output.cmd}' with error:"
+                  " '{cmd_output.error}'")
             if exit_on_fail:
                 print("Exiting the program")
                 sys.exit(-1)

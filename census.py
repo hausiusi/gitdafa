@@ -12,6 +12,9 @@ import re
 from datetime import datetime
 from loc import line_counter
 from loc.line_counter import LineCounter
+import asyncio
+import tqdm
+import tqdm.asyncio
 
 
 class Statistics(object):
@@ -22,7 +25,9 @@ class Statistics(object):
     def __init__(self,
                  root_dir,
                  parse_step_len: int = 20000,
-                 runner=CmdRunner):
+                 task_count: int = 1,
+                 runner=CmdRunner,
+                 debug=False):
         self.runner = runner
         self.authors = AuthorsCollection()
         self.tags = TagsCollection()
@@ -34,29 +39,60 @@ class Statistics(object):
         self.parse_step_len: int = int(parse_step_len)
         self.root_dir: str = root_dir
         self.errors: list = []
+        self.tasks: list = []
+        self.task_count: int = task_count
+
+    async def async_parse_authors(self, commit_from, commit_to):
+        self.authors.collection_creation_start()
+        parse_step_len = (commit_to - commit_from) // self.task_count
+        for i in range(commit_from, commit_to, parse_step_len):
+
+            task = asyncio.create_task(self.runner.async_run(
+                i, Cmd.LOG_NUMSTAT_SKIP_X_GET_Y % (i, parse_step_len)))
+            self.tasks.append(task)
+
+        pbar = tqdm.tqdm(total=len(self.tasks))
+        for f in asyncio.as_completed(self.tasks):
+            value = await f
+            pbar.set_description(value)
+            pbar.update()
+        return pbar
 
     def parse_authors(self):
         self.authors.collection_creation_start()
+        cmd_output = CmdRunner()
+        cmd_output.cmd = None
+
         for i in range(0, self.commits_count, self.parse_step_len):
             current_step = min(self.parse_step_len, self.commits_count - i)
-            cmd_output = self.runner.run(Cmd.LOG_NUMSTAT_SKIP_X_GET_Y %
-                                         (i, current_step))
-            commit_texts = cmd_output.stdout.split("\ncommit ")
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(
+                self.async_parse_authors(i, current_step))
+            cmd_outputs = self.runner.cmd_outs
+            commit_texts = []
+            [commit_texts.extend(
+                cmd_outputs[key]['stdout'].split("\ncommit "))
+             for key in cmd_outputs]
+            
             for commit_text in commit_texts:
+                #self.runner.verify(commit_text, debug=False, exit_on_fail=True)
                 commit_id = Parse.commit_id(commit_text)
                 commit_ = Commit(commit_id)
                 date = Parse.date(commit_text)
                 commit_.date = str(date)
                 commit_.message = Parse.message(commit_text)
                 commit_.changes = Parse.changes(commit_text)
+                if (commit_text.strip() == ''):
+                    continue
                 author_ = Parse.author(commit_text)
                 if author_ is None:
-                    print(
-                        '\n\nERROR: Could not parse commit text\n'
-                        f'Sometimes it happens when commits per step is little (CURRENT: {self.parse_step_len}). '
-                        f'Try to increase it at least to 500\n'
-                        f'Also, please try to run this command manually: "{cmd_output.cmd}"\n'
-                        f'COMMIT TEXT:\n{commit_text}\n------------\n')
+                    print('\n\nERROR: Could not parse commit text\n'
+                          f' Sometimes it happens when commits per step is'
+                          f' little (CURRENT: {self.parse_step_len}).'
+                          f' Try to increase it at least to 500\n'
+                          f' Also, please try to run this command'
+                          f' manually: "{cmd_output.cmd}"\n'
+                          f' COMMIT TEXT:\n{commit_text}\n------------\n')
                     raise IOError
 
                 if author_.email not in self.authors.collection:
@@ -66,7 +102,8 @@ class Statistics(object):
 
             percents = self.__get_progress_in_percents(i, current_step,
                                                        self.commits_count)
-            progress = f"{current_step + i}/{self.commits_count} commits parsed ({percents}%)"
+            progress = f"{current_step + i}/{self.commits_count}" \
+                f"commits parsed ({percents}%)"
             print(progress, end='\r')
         self.authors.collection_creation_end()
         return self
@@ -88,7 +125,8 @@ class Statistics(object):
             matches = re.findall(f'{previous_tag_commit_sha}.*{sha}', all_sha,
                                  re.DOTALL)
             if len(matches) == 0:
-                # sometimes next tag is not among next commits, reverse the search range
+                # Sometimes next tag is not among next commits,
+                # Reverse the search range
                 matches = re.findall(f'{sha}.*{previous_tag_commit_sha}',
                                      all_sha, re.DOTALL)
             if len(matches) == 0:
@@ -99,10 +137,11 @@ class Statistics(object):
                     continue
 
                 print(
-                    f"WARNING: TAG {name} with SHA1 {sha} found on branch {branch_containing_tag}"
-                )
+                    f"WARNING: TAG {name} with SHA1 {sha}"
+                    f"found on branch {branch_containing_tag}")
                 continue
-            # dropping the first sha1 as it can be our custom or sha1 from the previous tag
+            # Dropping the first sha1 as it can be our
+            # Custom or sha1 from the previous tag
             tag_sha_list = matches[0].split("\n")[1:]
             previous_tag_commit_sha = tag_sha_list[-1]
             tag_ = Tag(sha, name, tag_sha_list, tag_id)
@@ -175,17 +214,23 @@ class Statistics(object):
         lang_stats_table = self.__get_table(lang_stats)
         analyzed_files_table = self.__get_table(code_file_infos)
 
-        ret = \
-            f'\n\nSTATISTICS\nBranch: {self.branch}\nAll commits: {self.commits_count}' \
-            f'\n\nAUTHORS({len(authors)})\n{authors_table}\nDuration: {authors_duration}' \
-            f'\n\nTAGS({len(tags)})\n{tags_table}\nDuration: {tags_duration}' \
-            f'\n\nLOC({len(lang_stats)} language types)\n{lang_stats_table}\nDuration: {lang_stats_duration}' \
-            f'\n\nAnalyzed {len(code_file_infos)} different files\n{analyzed_files_table}' \
+        ret = f'\n\nSTATISTICS\nBranch: {self.branch}\n' \
+            f' All commits: {self.commits_count}' \
+            f'\n\nAUTHORS({len(authors)})\n{authors_table}\n' \
+            f'Duration: {authors_duration}' \
+            f'\n\nTAGS({len(tags)})\n{tags_table}\n' \
+            f'Duration: {tags_duration}' \
+            f'\n\nLOC({len(lang_stats)}' \
+            f'language types)\n{lang_stats_table}\n' \
+            f'Duration: {lang_stats_duration}' \
+            f'\n\nAnalyzed {len(code_file_infos)} ' \
+            f'different files\n{analyzed_files_table}' \
             f'\n\nERRORS {self.errors}'
         return ret
 
     def __repr__(self):
-        return f'{self.authors.collection} {self.tags.collection} {self.language_stats.collection}'
+        return f'{self.authors.collection} {self.tags.collection} ' \
+            f'{self.language_stats.collection}'
 
 
 class TimedCollectionBase:
@@ -244,7 +289,8 @@ class LanguageStatsCollection(TimedCollectionBase):
         total_code_comments = 0
         for language in self.collection:
             lang = self.collection[language]
-            total_lines += lang.code_lines + lang.comment_lines + lang.empty_lines
+            total_lines += lang.code_lines + lang.comment_lines \
+                + lang.empty_lines
             total_code += lang.code_lines
             total_code_comments += lang.code_lines + lang.comment_lines
 
@@ -255,7 +301,8 @@ class LanguageStatsCollection(TimedCollectionBase):
             lang.ratio_code_comments = self.__get_ratio_in_percents(
                 lang.code_lines + lang.comment_lines, total_code_comments)
             lang.ratio_total_lines = self.__get_ratio_in_percents(
-                lang.code_lines + lang.comment_lines + lang.empty_lines, total_lines)
+                lang.code_lines + lang.comment_lines + lang.empty_lines,
+                total_lines)
         super().collection_creation_end()
 
     @staticmethod
