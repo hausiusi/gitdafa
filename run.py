@@ -30,11 +30,14 @@ def prepare_results_file(root_dir: str, start_time: datetime) -> str:
     return results_file
 
 
-def prepare_for_statistics(root_dir, commits_per_step) -> Statistics:
-    statistics = Statistics(root_dir, commits_per_step)
+def prepare_for_statistics(root_dir, commits_per_step,
+                           task_count) -> Statistics:
+    statistics = Statistics(root_dir,
+                            commits_per_step,
+                            task_count=task_count)
     request_map = {
         'authors': statistics.parse_authors,
-        'tags': statistics.parse_tags,
+        # 'tags': statistics.parse_tags,
         'loc': statistics.count_lines
     }
     return statistics, request_map
@@ -75,6 +78,12 @@ if __name__ == "__main__":
                         metavar='',
                         help='Retrieved and parsed commits per step',
                         default=20000)
+    parser.add_argument('-t',
+                        '--task_count',
+                        metavar='',
+                        type=int,
+                        help='Asynchronous task quantity per step',
+                        default=1)
     parser.add_argument('-s',
                         '--stats',
                         metavar='',
@@ -95,7 +104,9 @@ if __name__ == "__main__":
     loc.ignored_directories_extend(args.igndir)
     loc.ignored_extensions_extend(args.ignext)
 
-    stats, fn_map = prepare_for_statistics(args.projdir, args.commits_per_step)
+    stats, fn_map = prepare_for_statistics(args.projdir,
+                                           args.commits_per_step,
+                                           args.task_count)
 
     if "all" in args.stats:
         for k in fn_map.keys():
@@ -104,7 +115,8 @@ if __name__ == "__main__":
         for req in args.stats:
             fn_map[req]()
 
-    print(stats)
+    #print(stats)
+    print('TIME DELTA:', (datetime.now() - t_start).total_seconds())
     save_results(res_file, t_start, datetime.now(), stats)
     # change working directory back to the initial one
     os.chdir(main_script_dir)
