@@ -17,3 +17,5 @@ class Cmd:
     CURRENT_BRANCH = 'git rev-parse --abbrev-ref HEAD'
     COMMIT_COUNT_ALL = 'git rev-list --all --count'
     COMMIT_COUNT_BRANCH = 'git rev-list --count HEAD'
+    FIRST_COMMIT_DATE = 'git log --date=format:"%Y-%m-%d %H:%M:%S" --format=%ad | tail -1'
+    LAST_COMMIT_DATE = 'git log --date=format:"%Y-%m-%d %H:%M:%S" --format=%ad -1'

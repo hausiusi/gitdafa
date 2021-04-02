@@ -31,6 +31,8 @@ class Statistics(object):
         self.branch: str = self.runner.run(Cmd.CURRENT_BRANCH).stdout
         self.commits_count: int = int(
             self.runner.run(Cmd.COMMIT_COUNT_BRANCH).stdout)
+        self.first_commit_date = self.runner.run(Cmd.FIRST_COMMIT_DATE).stdout
+        self.last_commit_date = self.runner.run(Cmd.LAST_COMMIT_DATE).stdout
         self.parse_step_len: int = int(parse_step_len)
         self.root_dir: str = root_dir
         self.errors: list = []
@@ -174,9 +176,13 @@ class Statistics(object):
         tags_table = self.__get_table(tags)
         lang_stats_table = self.__get_table(lang_stats)
         analyzed_files_table = self.__get_table(code_file_infos)
+        project_duration = datetime.strptime(
+            self.last_commit_date, '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+            self.first_commit_date, '%Y-%m-%d %H:%M:%S')
 
         ret = \
             f'\n\nSTATISTICS\nBranch: {self.branch}\nAll commits: {self.commits_count}' \
+            f'\nTotal days: {project_duration.days}' \
             f'\n\nAUTHORS({len(authors)})\n{authors_table}\nDuration: {authors_duration}' \
             f'\n\nTAGS({len(tags)})\n{tags_table}\nDuration: {tags_duration}' \
             f'\n\nLOC({len(lang_stats)} language types)\n{lang_stats_table}\nDuration: {lang_stats_duration}' \
