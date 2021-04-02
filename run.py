@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import ntpath
 import os
 import sys
 from datetime import datetime
+from os import path
 
 import loc
 from census import Statistics
@@ -25,7 +25,8 @@ def save_results(results_file: str, time_start, time_end, statistics: Statistics
 
 def prepare_results_file(root_dir: str, start_time: datetime) -> str:
     results_dir = root_dir + "/results/"
-    results_file = f'{results_dir}{start_time.strftime("%Y-%m-%d-%H-%M-%S")}_{ntpath.basename(args.projdir)}/stats.txt'
+    proj_name = path.basename(args.projdir.strip('/').strip('\\'))
+    results_file = f'{results_dir}{start_time.strftime("%Y-%m-%d-%H-%M-%S")}_{proj_name}/stats.txt'
     os.makedirs(os.path.dirname(results_file), exist_ok=True)
     return results_file
 
