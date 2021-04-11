@@ -37,7 +37,7 @@ def prepare_for_statistics(root_dir, commits_per_step,
                             task_count=task_count)
     request_map = {
         'authors': statistics.parse_authors,
-        # 'tags': statistics.parse_tags,
+        'tags': statistics.parse_tags,
         'loc': statistics.count_lines
     }
     return statistics, request_map

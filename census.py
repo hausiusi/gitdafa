@@ -12,6 +12,7 @@ import re
 from datetime import datetime
 from loc import line_counter
 from loc.line_counter import LineCounter
+from concurrent.futures import ProcessPoolExecutor
 import asyncio
 import tqdm
 import tqdm.asyncio
@@ -41,10 +42,15 @@ class Statistics(object):
         self.errors: list = []
         self.tasks: list = []
         self.task_count: int = task_count
+        self.enter_counter = 0
 
+    '''
     async def async_parse_authors(self, commit_from, commit_to):
         self.authors.collection_creation_start()
+        self.enter_counter += 1
         parse_step_len = (commit_to - commit_from) // self.task_count
+        print(f'for loop from {commit_from} to {commit_to} with step length '
+              f'{parse_step_len} enter {self.enter_counter}')
         for i in range(commit_from, commit_to, parse_step_len):
 
             task = asyncio.create_task(self.runner.async_run(
@@ -57,32 +63,53 @@ class Statistics(object):
             pbar.set_description(value)
             pbar.update()
         return pbar
+        '''
 
     def parse_authors(self):
+        print("this is the beginning")
+        loop = asyncio.get_event_loop()
+        try:
+            loop.run_until_complete(self._local())
+        finally:
+            loop.close()
+
+    async def _local(self):
+        commits_per_task = self.commits_count // self.task_count
+        i = 0
+        while i < self.commits_count:
+            # Give the last task rest of the commits
+            if (i + (commits_per_task * 2)) > self.commits_count:
+                commits_per_task = self.commits_count - i
+            print(f'Task added from {i} to {i + commits_per_task}')
+            task = asyncio.create_task(
+                self.async_parse_authors(i, i + commits_per_task))
+            self.tasks.append(task)
+            i += commits_per_task
+        for f in asyncio.as_completed(self.tasks):
+            value = await f
+            print(f'Task {f} completed')
+
+    async def async_parse_authors(self, commit_from, commit_to):
         self.authors.collection_creation_start()
         cmd_output = CmdRunner()
         cmd_output.cmd = None
-
-        for i in range(0, self.commits_count, self.parse_step_len):
+        counter = 0
+        for i in range(commit_from, commit_to, self.parse_step_len):
             current_step = min(self.parse_step_len, self.commits_count - i)
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(
-                self.async_parse_authors(i, current_step))
-            cmd_outputs = self.runner.cmd_outs
-            commit_texts = []
-            [commit_texts.extend(
-                cmd_outputs[key]['stdout'].split("\ncommit "))
-             for key in cmd_outputs]
-            
+            print(f'CALL {counter} i={i} current_step = {current_step}')
+            counter += 1
+            cmd_output = self.runner.run(Cmd.LOG_NUMSTAT_SKIP_X_GET_Y %
+                                         (i, current_step))
+            commit_texts = cmd_output.stdout.split("\ncommit ")
             for commit_text in commit_texts:
-                #self.runner.verify(commit_text, debug=False, exit_on_fail=True)
+                # self.runner.verify(commit_text, debug=False, exit_on_fail=True)
                 commit_id = Parse.commit_id(commit_text)
                 commit_ = Commit(commit_id)
                 date = Parse.date(commit_text)
                 commit_.date = str(date)
                 commit_.message = Parse.message(commit_text)
                 commit_.changes = Parse.changes(commit_text)
-                if (commit_text.strip() == ''):
+                if commit_text.strip() == '':
                     continue
                 author_ = Parse.author(commit_text)
                 if author_ is None:
@@ -103,7 +130,7 @@ class Statistics(object):
             percents = self.__get_progress_in_percents(i, current_step,
                                                        self.commits_count)
             progress = f"{current_step + i}/{self.commits_count}" \
-                f"commits parsed ({percents}%)"
+                       f"commits parsed ({percents}%)"
             print(progress, end='\r')
         self.authors.collection_creation_end()
         return self
@@ -215,22 +242,22 @@ class Statistics(object):
         analyzed_files_table = self.__get_table(code_file_infos)
 
         ret = f'\n\nSTATISTICS\nBranch: {self.branch}\n' \
-            f' All commits: {self.commits_count}' \
-            f'\n\nAUTHORS({len(authors)})\n{authors_table}\n' \
-            f'Duration: {authors_duration}' \
-            f'\n\nTAGS({len(tags)})\n{tags_table}\n' \
-            f'Duration: {tags_duration}' \
-            f'\n\nLOC({len(lang_stats)}' \
-            f'language types)\n{lang_stats_table}\n' \
-            f'Duration: {lang_stats_duration}' \
-            f'\n\nAnalyzed {len(code_file_infos)} ' \
-            f'different files\n{analyzed_files_table}' \
-            f'\n\nERRORS {self.errors}'
+              f' All commits: {self.commits_count}' \
+              f'\n\nAUTHORS({len(authors)})\n{authors_table}\n' \
+              f'Duration: {authors_duration}' \
+              f'\n\nTAGS({len(tags)})\n{tags_table}\n' \
+              f'Duration: {tags_duration}' \
+              f'\n\nLOC({len(lang_stats)}' \
+              f'language types)\n{lang_stats_table}\n' \
+              f'Duration: {lang_stats_duration}' \
+              f'\n\nAnalyzed {len(code_file_infos)} ' \
+              f'different files\n{analyzed_files_table}' \
+              f'\n\nERRORS {self.errors}'
         return ret
 
     def __repr__(self):
         return f'{self.authors.collection} {self.tags.collection} ' \
-            f'{self.language_stats.collection}'
+               f'{self.language_stats.collection}'
 
 
 class TimedCollectionBase:
@@ -290,7 +317,7 @@ class LanguageStatsCollection(TimedCollectionBase):
         for language in self.collection:
             lang = self.collection[language]
             total_lines += lang.code_lines + lang.comment_lines \
-                + lang.empty_lines
+                           + lang.empty_lines
             total_code += lang.code_lines
             total_code_comments += lang.code_lines + lang.comment_lines
 
