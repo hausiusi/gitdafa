@@ -59,6 +59,8 @@ def test_statistics():
         expects = json.load(f)
     stats = Statistics('tests/data/samples', parse_step_len=3, runner=MockCmdRunner)
     assert stats.commits_count == expects['total_commits']
+    assert stats.first_commit_date == expects["first_commit_date"]
+    assert stats.last_commit_date == expects["last_commit_date"]
     stats.parse_authors()
     expected_authors = expects['parse_authors']['authors_by_email']
     for email in expected_authors:
