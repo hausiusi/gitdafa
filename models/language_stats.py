@@ -70,3 +70,18 @@ class LanguageStats(TableInterface):
                 "code+comments%",
                 "total%",
                 "Extensions found"]
+
+    def serialize(self):
+        """Returns json serializable dictionary"""
+        return {
+            "code_file_info_lst": [item.serialize() for item in self.code_file_info_lst],
+            "language": self.language,
+            "code_lines": self.code_lines,
+            "comment_lines": self.comment_lines,
+            "empty_lines": self.empty_lines,
+            "files_count": self.files_count,
+            "extensions_found": self.extensions_found,
+            "ratio_code": self.ratio_code,
+            "ratio_code_comments": self.ratio_code_comments,
+            "ratio_total_lines": self.ratio_total_lines,
+        }

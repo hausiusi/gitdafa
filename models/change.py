@@ -1,13 +1,13 @@
 class Change:
     """
     Model, to reflect file change properties.
-    
+
     Parameters
     ----------
     file_name : str, optional
     added : str, optional
-    deleted : str, optional    
-    
+    deleted : str, optional
+
     Attributes
     ----------
     self.file : str
@@ -24,6 +24,14 @@ class Change:
         self.added = added
         self.deleted = deleted
 
+    def serialize(self):
+        """Returns json serializable dictionary"""
+        return {
+            'file': self.file,
+            'added': self.added,
+            'deleted': self.deleted
+        }
+
     def __eq__(self, item):
         if (item.added == self.added and item.deleted == self.deleted
                 and item.file == self.file):
@@ -32,7 +40,7 @@ class Change:
             return False
 
     def __str__(self):
-        return f"File: {self.file}, "  + \
+        return f"File: {self.file}, " + \
             f"Added: {self.added}, " + \
             f"Deleted: {self.deleted}"
 

@@ -50,3 +50,15 @@ class CodeFileInfo(TableInterface):
                 "Code lines",
                 "Comment lines",
                 "Empty lines"]
+
+    def serialize(self):
+        """Returns json serializable dictionary"""
+        return {
+            "file_path": self.file_path,
+            "language": self.language,
+            "file_ext": self.file_ext,
+            "code_lines": self.code_lines,
+            "comment_lines": self.comment_lines,
+            "empty_lines": self.empty_lines,
+            "description": self.description,
+        }

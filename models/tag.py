@@ -32,3 +32,12 @@ class Tag(TableInterface):
 
     def get_table_headers(self) -> []:
         return ["Name", "SHA", "Index", "Commits"]
+
+    def serialize(self):
+        """Returns json serializable dictionary"""
+        return {
+            "sha": self.sha,
+            "name": self.name,
+            "index": self.index,
+            "commits": self.commits,
+        }
