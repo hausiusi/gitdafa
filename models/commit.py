@@ -5,7 +5,7 @@
 class Commit:
     """
     Model, to reflect commit properties.
-    
+
     Parameters
     ----------
     commit_id : str
@@ -16,7 +16,7 @@ class Commit:
     Attributes
     ----------
     self._id : str
-        commit ID 
+        commit ID
     self.author : Author
     self.date : datetime.datetime
     self.message : str
@@ -41,3 +41,13 @@ class Commit:
     def __repr__(self):
         return f"'author': {self.author.email if self.author else 'None'}, " + \
             f"'date': {self.date}"
+
+    def serialize(self):
+        """Returns json serializable dictionary"""
+        return {
+            "_id": self._id,
+            "author": self.author,
+            "date": self.date,
+            "message": self.message,
+            "changes": self.changes,
+        }

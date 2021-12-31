@@ -17,20 +17,19 @@ class Author(TableInterface):
     ----------
     self.name : str
     self.email : str
-    self.commits : list 
-    self.lines_added : int 
+    self.commits : list
+    self.lines_added : int
     self.lines_delete : int
-    
+
     Properties
     ----------
     commits_count : int
-    
+
     Methods
     -------
     add_commit(commit)
-    
-    """
 
+    """
     def __init__(self, name: str = None, email: str = None):
         self.name: str = name
         self.email: str = email
@@ -50,7 +49,7 @@ class Author(TableInterface):
         """
         Add commit to the attribute commits list and
         increment lines_added and lines_deleted attributes
-        
+
         Parameters
         ----------
         commit : Commit
@@ -78,6 +77,16 @@ class Author(TableInterface):
                 "Commits",
                 "Lines added",
                 "Lines deleted"]
+
+    def serialize(self):
+        """Returns json serializable dictionary"""
+        return {
+            'name': self.name,
+            'email': self.email,
+            'commits': self.commits,
+            'lines_added': self.lines_added,
+            'lines_deleted': self.lines_deleted,
+        }
 
     def __eq__(self, item):
         if item.email == self.email:
