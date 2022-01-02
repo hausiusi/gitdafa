@@ -122,10 +122,12 @@ class LineCounter:
         comments = []
         description = "Unknown"
         language = "Unknown"
+        is_source_code = False
         if ext in known_types:
             comments = known_types[ext]["comments"]
             description = known_types[ext]["description"]
             language = known_types[ext]["language"]
+            is_source_code = known_types[ext]["is_source_code"]
         code_lines = 0
         comment_lines = 0
         empty_lines = 0
@@ -175,7 +177,8 @@ class LineCounter:
                                 comment_lines,
                                 code_lines,
                                 empty_lines,
-                                description)
+                                description,
+                                is_source_code)
         finally:
             for error in self.errors:
                 print(f"ERROR: {error}")

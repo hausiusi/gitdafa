@@ -11,6 +11,7 @@ class LanguageStats(TableInterface):
         self.language: str = language
         self.code_lines: int = 0
         self.comment_lines: int = 0
+        self.text_lines: int = 0
         self.empty_lines: int = 0
         self.files_count: int = 0
         self.extensions_found: list = []
@@ -36,7 +37,10 @@ class LanguageStats(TableInterface):
                   f'destination language "{self.language}"')
             return
         self.code_file_info_lst.append(code_file_info)
-        self.code_lines += code_file_info.code_lines
+        if code_file_info.is_source_code:
+            self.code_lines += code_file_info.code_lines
+        else:
+            self.text_lines += code_file_info.code_lines
         self.comment_lines += code_file_info.comment_lines
         self.empty_lines += code_file_info.empty_lines
         if code_file_info.file_ext not in self.extensions_found:
@@ -48,6 +52,7 @@ class LanguageStats(TableInterface):
                 self.code_lines,
                 self.comment_lines,
                 self.empty_lines,
+                self.text_lines,
                 self.files_count,
                 self.ratio_code,
                 self.ratio_code_comments,
@@ -59,6 +64,7 @@ class LanguageStats(TableInterface):
                 "Code lines",
                 "Comment lines",
                 "Empty lines",
+                "Text lines",
                 "Files count",
                 "code%",
                 "code+comments%",

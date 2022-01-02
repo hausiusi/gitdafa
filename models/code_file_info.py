@@ -12,7 +12,8 @@ class CodeFileInfo(TableInterface):
                  comment_lines: int,
                  code_lines: int,
                  empty_lines: int,
-                 description: str):
+                 description: str,
+                 is_source_code: bool):
         """
         Initializes a new instance of CodeFileInfo
         @param file_path: path to the file
@@ -23,6 +24,7 @@ class CodeFileInfo(TableInterface):
         @param comment_lines: count of the comment lines in the file
         @param empty_lines: count of the empty lines in the file
         @param description: file description according to its extension
+        @param is_source_code: whether file is a source code or a text
         """
         self.file_path: str = file_path
         self.language: str = language
@@ -31,6 +33,7 @@ class CodeFileInfo(TableInterface):
         self.comment_lines: int = comment_lines
         self.empty_lines: int = empty_lines
         self.description: str = description
+        self.is_source_code: bool = is_source_code
 
     def get_table_row(self) -> []:
         return [self.file_path,
