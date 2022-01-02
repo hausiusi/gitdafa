@@ -250,7 +250,10 @@ class LanguageStatsCollection(TimedCollectionBase):
         total_code_comments = 0
         for language in self.collection:
             lang = self.collection[language]
-            total_lines += lang.code_lines + lang.comment_lines + lang.empty_lines
+            total_lines += lang.code_lines + \
+                           lang.comment_lines + \
+                           lang.empty_lines + \
+                           lang.text_lines
             total_code += lang.code_lines
             total_code_comments += lang.code_lines + lang.comment_lines
 
@@ -261,7 +264,8 @@ class LanguageStatsCollection(TimedCollectionBase):
             lang.ratio_code_comments = self.__get_ratio_in_percents(
                 lang.code_lines + lang.comment_lines, total_code_comments)
             lang.ratio_total_lines = self.__get_ratio_in_percents(
-                lang.code_lines + lang.comment_lines + lang.empty_lines, total_lines)
+                lang.code_lines + lang.comment_lines + lang.empty_lines +
+                lang.text_lines, total_lines)
         super().collection_creation_end()
 
     @staticmethod

@@ -2,106 +2,127 @@
     ".c": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "C source",
+        "is_source_code": true,
         "language": "C"
     },
     ".h": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "C header",
+        "is_source_code": true,
         "language": "C"
     },
     ".cpp": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "C++ source",
+        "is_source_code": true,
         "language": "C++"
     },
     ".hpp": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "C++ header",
+        "is_source_code": true,
         "language": "C++"
     },
     ".cs": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "C# source",
+        "is_source_code": true,
         "language": "C#"
     },
     ".java": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "Java source",
+        "is_source_code": true,
         "language": "Java"
     },
     ".go": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "Golang source",
+        "is_source_code": true,
         "language": "Go"
     },
     ".s": {
         "comments": [["#", "\n"], ["//", "\n"], ["/*", "*/"]],
         "description": "Assembly source",
+        "is_source_code": true,
         "language": "Assembly"
     },
     ".asm": {
         "comments": [[";", "\n"]],
         "description": "Assembly source",
+        "is_source_code": true,
         "language": "Assembly"
     },
     ".py": {
         "comments": [["#", "\n"]],
         "description": "Python source",
+        "is_source_code": true,
         "language": "Python"
     },
     ".yml": {
         "comments": [["#", "\n"]],
         "description": "Yaml source",
+        "is_source_code": true,
         "language": "Yaml"
     },
     ".yaml": {
         "comments": [["#", "\n"]],
         "description": "Yaml source",
+        "is_source_code": true,
         "language": "Yaml"
     },
     ".md": {
         "comments": [],
         "description": "Markdown file",
+        "is_source_code": false,
         "language": "Markdown"
     },
     ".json": {
         "comments": [],
         "description": "Json file",
+        "is_source_code": false,
         "language": "JSON"
     },
     ".js": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "Javascript source",
+        "is_source_code": false,
         "language": "Javascript"
     },
     ".txt": {
         "comments": [],
         "description": "Text file",
+        "is_source_code": false,
         "language": "Plain text"
     },
     ".rst": {
         "comments": [],
         "description": "Restructured text file",
+        "is_source_code": false,
         "language": "Formatted text"
     },
     ".sh": {
         "comments": [["#", "\n"]],
         "description": "Shell script file",
+        "is_source_code": true,
         "language": "Shell script"
     },
     ".bb": {
         "comments": [["#", "\n"]],
         "description": "Bitbake file",
+        "is_source_code": true,
         "language": "Bitbake"
     },
     ".bbclass": {
         "comments": [["#", "\n"]],
         "description": "Bitbake class",
+        "is_source_code": true,
         "language": "Bitbake"
     },
     ".bbappend": {
         "comments": [["#", "\n"]],
         "description": "Bitbake append file",
+        "is_source_code": true,
         "language": "Bitbake"
     }
 }
