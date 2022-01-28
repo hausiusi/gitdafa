@@ -22,6 +22,7 @@ class Statistics(object):
     def __init__(self,
                  root_dir,
                  parse_step_len: int = 20000,
+                 count_continued_lines: bool = False,
                  runner=CmdRunner):
         self.runner = runner
         self.authors = AuthorsCollection()
@@ -35,6 +36,7 @@ class Statistics(object):
         self.last_commit_date = self.runner.run(Cmd.LAST_COMMIT_DATE).stdout
         self.parse_step_len: int = int(parse_step_len)
         self.root_dir: str = root_dir
+        self.count_continued_lines = count_continued_lines
         self.errors: list = []
 
     def parse_authors(self):
@@ -125,7 +127,7 @@ class Statistics(object):
         for file in files_to_analyze:
             current += 1
             cf_analyzer = LineCounter(file)
-            cfi = cf_analyzer.count()
+            cfi = cf_analyzer.count(self.count_continued_lines)
             if cfi is None:
                 self.errors.extend(cf_analyzer.errors)
                 continue

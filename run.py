@@ -16,7 +16,8 @@ Gitribution is a tool intended for statistical analyzes of git projects.
 """
 
 
-def save_results(results_file: str, time_start, time_end, statistics: Statistics):
+def save_results(results_file: str, time_start, time_end,
+                 statistics: Statistics):
     elapsed = time_end - time_start
     data_to_write = f"Duration: {str(elapsed)}\n\n{str(statistics)}"
     with open(results_file, encoding="utf-8", mode="w", errors='replace') as f:
@@ -31,8 +32,11 @@ def prepare_results_file(root_dir: str, start_time: datetime) -> str:
     return results_file
 
 
-def prepare_for_statistics(root_dir, commits_per_step) -> Statistics:
-    statistics = Statistics(root_dir, commits_per_step)
+def prepare_for_statistics(root_dir,
+                           commits_per_step,
+                           count_continued_lines) -> Statistics:
+    statistics = Statistics(root_dir, commits_per_step,
+                            count_continued_lines=count_continued_lines)
     request_map = {
         'authors': statistics.parse_authors,
         'tags': statistics.parse_tags,
@@ -61,6 +65,12 @@ if __name__ == "__main__":
                         help="Appends extensions that will be ignored",
                         default=[],
                         nargs="+")
+    parser.add_argument('-if',
+                        "--ignfiles",
+                        metavar='',
+                        help="Appends files that will be ignored",
+                        default=[],
+                        nargs="+")
     parser.add_argument('-idc',
                         '--igndir_clear',
                         metavar='',
@@ -71,6 +81,12 @@ if __name__ == "__main__":
                         metavar='',
                         help='Resets default extensions that will be ignored',
                         default=False)
+    parser.add_argument('-ccl',
+                        '--count_continued_lines',
+                        help='When set, the lines which end with \\ symbol '
+                             'will be counted as a code line, otherwise, '
+                             '\\ ending lines will be ignored',
+                        action='store_true')
     parser.add_argument('-cps',
                         '--commits_per_step',
                         metavar='',
@@ -91,12 +107,15 @@ if __name__ == "__main__":
     if args.igndir_clear:
         loc.ignored_directories_clear()
     if args.ignext_clear:
-        loc.ignored_extensions_clear
+        loc.ignored_extensions_clear()
 
     loc.ignored_directories_extend(args.igndir)
     loc.ignored_extensions_extend(args.ignext)
+    loc.ignored_files_extend(args.ignfiles)
 
-    stats, fn_map = prepare_for_statistics(args.projdir, args.commits_per_step)
+    stats, fn_map = prepare_for_statistics(args.projdir,
+                                           args.commits_per_step,
+                                           args.count_continued_lines)
 
     if "all" in args.stats:
         for k in fn_map.keys():
