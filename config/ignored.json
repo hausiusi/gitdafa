@@ -1,0 +1,6 @@
+{
+  "extensions": [".pyc", ".o", ".d", ".su", ".bin", ".elf"],
+  "files": [],
+  "directories": [".env", ".git", ".vs", ".vscode", ".venv", ".idea", ".pytest_cache", "__pycache__"],
+  "subdirectories": ["__pycache__", ".pytest_cache"]
+}

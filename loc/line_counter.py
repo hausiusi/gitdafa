@@ -21,102 +21,104 @@ def __json_load(file_path: str):
         return json.load(f)
 
 
-ignored_directories = __json_load("loc/ignored_directories.json")
-ignored_extensions = __json_load("loc/ignored_extensions.json")
-ignored_subdirs = __json_load("loc/ignored_subdirs.json")
-known_types = __json_load("loc/known_types.json")
+ignored = __json_load("config/ignored.json")
+known_types = __json_load("config/known_types.json")
 
 
 def ignored_directories_clear():
     """
     Clear ignored directories dictionary
     """
-    global ignored_directories
-    ignored_directories = []
+    global ignored
+    ignored["directories"] = []
+
 
 def ignored_subdirectories_clear():
     """
-    Clear ignored subdirs dictionary
+    Clear ignored subdirectories list
     """
-    global ignored_subdirs
-    ignored_subdirs = []
+    global ignored
+    ignored["subdirectories"] = []
+
 
 def ignored_extensions_clear():
     """
-    Clear ignored extensions dictionary
+    Clear ignored extensions list
     """
-    global ignored_extensions
-    ignored_extensions = []
+    global ignored
+    ignored["extensions"] = []
+
+
+def ignored_files_clear():
+    """
+    Clear ignored files list
+    """
+    global ignored
+    ignored["files"] = []
 
 
 def ignored_directories_extend(directories):
     """
-    Extend ignored_directories dictionary
+    Extend ignored directories list
     
     Parameters
     ----------
     directories : dict
     """
-    global ignored_directories
-    ignored_directories.extend(directories)
+    global ignored
+    ignored["directories"].extend(directories)
 
 
 def ignored_extensions_extend(extensions):
     """
-    Extend ignored_extensions dictionary
+    Extend ignored extensions list
     
     Parameters
     ----------
-    extensions : dict
+    extensions : list
     """
-    global ignored_extensions
-    ignored_extensions.extend(extensions)
+    global ignored
+    ignored["extensions"].extend(extensions)
 
 
 def ignored_subdirectories_extend(subdirs):
     """
-    Extend ignored_subdirs dictionary
+    Extend ignored_subdirectories list
     
     Parameters
     ----------
     subdirs : dict
     """
-    global ignored_subdirs
-    ignored_subdirs.extend(subdirs)
+    global ignored
+    ignored["subdirectories"].extend(subdirs)
+
+
+def ignored_files_extend(files):
+    """
+    Extend ignored files list
+    Parameters
+    ----------
+    files : list
+    -------
+    """
+    global ignored
+    ignored["files"].extend(files)
 
 
 class LineCounter:
     """
-    Analyze code in file
+    Analyze code and count lines
     
     Parameters
     ----------
     code_file_path : str
-    
-    Class Attributes
-    ---------------
-    result : dict
-        Dictionary for storing CodeFileAnalyzer results
-
-    Attributes
-    ----------
-    extension : str
-        Code file extension
-    code_lines : int
-        Code line count
-    comment_lines : int
-        Comment line count
-    empty_lines : int
-        Empty line count
-
     """
-    result = {}
 
     def __init__(self, code_file_path: str):
         self.code_file_path = code_file_path
         self.errors = []
 
-    def count(self) -> CodeFileInfo:
+    def count(self, count_continued_lines: bool) -> CodeFileInfo:
         _, ext = os.path.splitext(self.code_file_path)
         ext = ext.lower()
         comments = []
@@ -135,7 +137,8 @@ class LineCounter:
         comment_end_found = True
         not_code_line = False
         try:
-            for line in open(self.code_file_path, 'r', encoding='utf-8', errors='replace'):
+            for line in open(self.code_file_path, 'r', encoding='utf-8',
+                             errors='replace'):
                 line = line.lstrip()
                 if not comment_end_found:
                     comment_lines += 1
@@ -160,7 +163,9 @@ class LineCounter:
                 if not_code_line:
                     not_code_line = False
                     continue
-                code_lines += 1
+                if count_continued_lines or not line.endswith("\\\n"):
+                    code_lines += 1
+
         except IOError as ex:
             msg = f"Can not open {self.code_file_path} {ex}"
             self.errors.append(msg)
@@ -200,8 +205,11 @@ def get_file_names(root_dir: str):
         List of file paths
     """
     file_paths = []
-    global ignored_extensions
-    global ignored_directories 
+    global ignored
+    ignored_directories = ignored["directories"]
+    ignored_extensions = ignored["extensions"]
+    ignored_subdirectories = ignored["subdirectories"]
+    ignored_files = ignored["files"]
     ignored_extensions = [e.lower() for e in ignored_extensions]
     if sys.platform == 'win32':
         _sep = '/'
@@ -210,12 +218,13 @@ def get_file_names(root_dir: str):
         _sep = '\\'
         sep = '/'
     root_dir = root_dir.replace(_sep, sep)
-    ignored_directories = [igd.replace(_sep, sep) for igd in ignored_directories]
+    ignored_directories = [igd.replace(_sep, sep) for igd in
+                           ignored_directories]
     for root, _, files in os.walk(root_dir):
         check_dir = True
         split_dirs = os.path.relpath(root, root_dir).split(sep)
         for sp_dir in split_dirs:
-            if sp_dir in ignored_subdirs:
+            if sp_dir in ignored_subdirectories:
                 check_dir = False
                 break
         add_files = True
@@ -226,6 +235,8 @@ def get_file_names(root_dir: str):
                     break
             if add_files:
                 for f in files:
-                    if os.path.splitext(f)[-1].lower() not in ignored_extensions:
+                    if os.path.splitext(f)[-1].lower() \
+                            not in ignored_extensions \
+                            and f not in ignored_files:
                         file_paths.append(os.path.join(root, f))
     return file_paths
