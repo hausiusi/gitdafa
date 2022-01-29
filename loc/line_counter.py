@@ -189,11 +189,11 @@ def get_file_names(root_dir: str):
     """
     Get all files under the root_dir except files that are placed in the
     ignored directories or have ignored extensions
-    
+
     Parameters
     ----------
     root_dir : str
-    
+
     Returns
     -------
     list of str
@@ -201,7 +201,7 @@ def get_file_names(root_dir: str):
     """
     file_paths = []
     global ignored_extensions
-    global ignored_directories 
+    global ignored_directories
     ignored_extensions = [e.lower() for e in ignored_extensions]
     if sys.platform == 'win32':
         _sep = '/'
@@ -209,7 +209,8 @@ def get_file_names(root_dir: str):
     else:
         _sep = '\\'
         sep = '/'
-    root_dir = root_dir.replace(_sep, sep)
+    # root_dir.replace(_sep, sep)
+    root_dir = os.getcwd().replace(_sep, sep)
     ignored_directories = [igd.replace(_sep, sep) for igd in ignored_directories]
     for root, _, files in os.walk(root_dir):
         check_dir = True
