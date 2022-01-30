@@ -206,6 +206,7 @@ class Statistics(object):
             self.first_commit_date, '%Y-%m-%d %H:%M:%S')
 
         all_authors_per_month = ''
+        month_stats = {}
         for month in author_per_month:
             all_author = Author(name='All', email='all')
             for author in author_per_month[month]:
@@ -213,14 +214,20 @@ class Statistics(object):
                 all_author.commits.extend(current_auth.commits)
                 all_author.lines_added += current_auth.lines_added
                 all_author.lines_deleted += current_auth.lines_deleted
+            month_stats[month] = all_author
             author_in_month_table = self.__get_table(author_per_month[month])
             all_authors_per_month += f'MONTH({month})\n{author_in_month_table}\n*\n'
+
+        all_lines_per_month = ''
+        all_month_table = self.__get_table(month_stats, add_index=True)
+        all_lines_per_month += f'MONTH ALL\n{all_month_table}\n'
 
         ret = \
             f'\n\nSTATISTICS\nBranch: {self.branch}\nAll commits: {self.commits_count}' \
             f'\nTotal days: {project_duration.days}' \
             f'\n\nAUTHORS({len(authors)})\n{authors_table}\nDuration: {authors_duration}' \
-            + '\n\n\nAUTHORS_PER_MONTH \n' + all_authors_per_month + \
+            + '\n\n\nAUTHORS_PER_MONTH \n' + all_authors_per_month \
+            + '\n\n\nALL_PER_MONTH \n' + all_lines_per_month + \
             f'\n\n\nTAGS({len(tags)})\n{tags_table}\nDuration: {tags_duration}' \
             f'\n\nLOC({len(lang_stats)} language types)\n{lang_stats_table}\nDuration: {lang_stats_duration}' \
             f'\n\nAnalyzed {len(code_file_infos)} different files\n{analyzed_files_table}' \
