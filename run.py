@@ -49,6 +49,7 @@ def prepare_for_statistics(root_dir,
                             count_continued_lines=count_continued_lines)
     request_map = {
         'authors': statistics.parse_authors,
+        'authors_per_month': statistics.parse_authors_per_month,
         'tags': statistics.parse_tags,
         'loc': statistics.count_lines
     }
@@ -102,12 +103,13 @@ if __name__ == "__main__":
                         metavar='',
                         help='Retrieved and parsed commits per step',
                         default=20000)
-    parser.add_argument('-s',
-                        '--stats',
-                        metavar='',
-                        help='Creates desired statistics (authors, tags, loc)',
-                        default=['all'],
-                        nargs="+")
+    parser.add_argument(
+        '-s',
+        '--stats',
+        metavar='',
+        help='Creates desired statistics (authors, authors_per_month, tags, loc)',
+        default=['all'],
+        nargs="+")
 
     t_start = datetime.now()
     args = parser.parse_args()
