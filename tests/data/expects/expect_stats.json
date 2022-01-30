@@ -24,30 +24,35 @@
           "code_lines": 5,
           "comment_lines": 6,
           "empty_lines": 4,
+          "text_lines": 0,
           "files_count": 1
         },
         "JSON": {
-          "code_lines": 24,
+          "code_lines": 0,
           "comment_lines": 0,
           "empty_lines": 2,
+          "text_lines": 24,
           "files_count": 1
         },
         "Python": {
           "code_lines": 5,
           "comment_lines": 3,
           "empty_lines": 5,
+          "text_lines": 0,
           "files_count": 1
         },
         "Javascript": {
           "code_lines": 11,
           "comment_lines": 1,
           "empty_lines": 3,
+          "text_lines": 0,
           "files_count": 1
         },
         "Plain text": {
-          "code_lines": 9,
+          "code_lines": 0,
           "comment_lines": 0,
           "empty_lines": 4,
+          "text_lines": 9,
           "files_count": 4
         }
       }
