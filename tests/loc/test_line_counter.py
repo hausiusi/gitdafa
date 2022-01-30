@@ -92,7 +92,7 @@ def test_line_counter():
         expects = json.load(f)
     for file_name in file_names:
         counter = loc.LineCounter(file_name)
-        cfi = counter.count()
+        cfi = counter.count(False)
         reference = expects[os.path.basename(file_name)]
         assert cfi.language == reference['language']
         assert cfi.comment_lines == reference['comment_lines']

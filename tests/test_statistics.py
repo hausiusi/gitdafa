@@ -78,6 +78,7 @@ def test_statistics():
         parsed = stats.language_stats.collection[language]
         reference = expected_languages[language]
         assert parsed.code_lines == reference['code_lines']
+        assert parsed.text_lines == reference['text_lines']
         assert parsed.comment_lines == reference['comment_lines']
         assert parsed.empty_lines == reference['empty_lines']
         assert parsed.files_count == reference['files_count']

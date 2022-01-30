@@ -86,7 +86,7 @@
     ".js": {
         "comments": [["//", "\n"], ["/*", "*/"]],
         "description": "Javascript source",
-        "is_source_code": false,
+        "is_source_code": true,
         "language": "Javascript"
     },
     ".txt": {
