@@ -5,7 +5,7 @@ from _cmd import CmdRunner
 from git import Parse
 from git import Cmd
 from models import Commit, LanguageStats
-from models import Tag
+from models import Tag, Author
 from string import Formatter
 from tabulate import tabulate
 import re
@@ -38,6 +38,26 @@ class Statistics(object):
         self.root_dir: str = root_dir
         self.count_continued_lines = count_continued_lines
         self.errors: list = []
+        self.authors_per_month = {}
+
+    def parse_authors_per_month(self):
+        if not self.authors.collection:
+            self.parse_authors()
+        for author_email in self.authors.collection:
+            commits = self.authors.collection[author_email].commits
+            for commit in commits:
+                month = (commit.datetime.year, commit.datetime.month)
+                if month not in self.authors_per_month:
+                    self.authors_per_month[month] = {author_email: Author(
+                        name=self.authors.collection[author_email].name,
+                        email=author_email)}
+                else:
+                    if author_email not in self.authors_per_month[month]:
+                        self.authors_per_month[month][author_email] = Author(
+                            name=self.authors.collection[author_email].name,
+                            email=author_email)
+                    self.authors_per_month[month][author_email].add_commit(commit)
+        return self.authors_per_month
 
     def parse_authors(self):
         self.authors.collection_creation_start()
@@ -51,6 +71,7 @@ class Statistics(object):
                 commit_ = Commit(commit_id)
                 date = Parse.date(commit_text)
                 commit_.date = str(date)
+                commit_.datetime = date
                 commit_.message = Parse.message(commit_text)
                 commit_.changes = Parse.changes(commit_text)
                 author_ = Parse.author(commit_text)
@@ -145,12 +166,13 @@ class Statistics(object):
         return self
 
     @classmethod
-    def __get_table(cls, _dict):
+    def __get_table(cls, _dict, add_index=False):
         rows = []
-        if len(_dict.keys()) == 0:
+        if not _dict:
             return "N/A"
         for k in _dict.keys():
-            rows.append(_dict[k].get_table_row())
+            index = [k] if add_index else []
+            rows.append(index + _dict[k].get_table_row())
         headers = next(iter(_dict.values())).get_table_headers()
         table = tabulate(rows, headers)
         return table
@@ -164,6 +186,7 @@ class Statistics(object):
 
     def __str__(self):
         authors = self.authors.collection
+        author_per_month = self.authors_per_month
         authors_duration = self.authors.collection_creation_duration(
             '{H:02}:{M:02}:{S:02}.{F:06}')
         tags = self.tags.collection
@@ -182,11 +205,23 @@ class Statistics(object):
             self.last_commit_date, '%Y-%m-%d %H:%M:%S') - datetime.strptime(
             self.first_commit_date, '%Y-%m-%d %H:%M:%S')
 
+        all_authors_per_month = ''
+        for month in author_per_month:
+            all_author = Author(name='All', email='all')
+            for author in author_per_month[month]:
+                current_auth = author_per_month[month][author]
+                all_author.commits.extend(current_auth.commits)
+                all_author.lines_added += current_auth.lines_added
+                all_author.lines_deleted += current_auth.lines_deleted
+            author_in_month_table = self.__get_table(author_per_month[month])
+            all_authors_per_month += f'MONTH({month})\n{author_in_month_table}\n*\n'
+
         ret = \
             f'\n\nSTATISTICS\nBranch: {self.branch}\nAll commits: {self.commits_count}' \
             f'\nTotal days: {project_duration.days}' \
             f'\n\nAUTHORS({len(authors)})\n{authors_table}\nDuration: {authors_duration}' \
-            f'\n\nTAGS({len(tags)})\n{tags_table}\nDuration: {tags_duration}' \
+            + '\n\n\nAUTHORS_PER_MONTH \n' + all_authors_per_month + \
+            f'\n\n\nTAGS({len(tags)})\n{tags_table}\nDuration: {tags_duration}' \
             f'\n\nLOC({len(lang_stats)} language types)\n{lang_stats_table}\nDuration: {lang_stats_duration}' \
             f'\n\nAnalyzed {len(code_file_infos)} different files\n{analyzed_files_table}' \
             f'\n\nERRORS {self.errors}'
@@ -253,9 +288,9 @@ class LanguageStatsCollection(TimedCollectionBase):
         for language in self.collection:
             lang = self.collection[language]
             total_lines += lang.code_lines + \
-                           lang.comment_lines + \
-                           lang.empty_lines + \
-                           lang.text_lines
+                lang.comment_lines + \
+                lang.empty_lines + \
+                lang.text_lines
             total_code += lang.code_lines
             total_code_comments += lang.code_lines + lang.comment_lines
 

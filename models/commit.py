@@ -30,6 +30,7 @@ class Commit:
         self._id = commit_id
         self.author = author
         self.date = date
+        self.datetime = None
         self.message = message
         self.changes = []
 
