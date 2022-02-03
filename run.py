@@ -93,13 +93,13 @@ if __name__ == "__main__":
                         metavar='',
                         help='Retrieved and parsed commits per step',
                         default=20000)
-    parser.add_argument(
-        '-s',
-        '--stats',
-        metavar='',
-        help='Creates desired statistics (authors, authors_per_month, tags, loc)',
-        default=['all'],
-        nargs="+")
+    parser.add_argument('-s',
+                        '--stats',
+                        metavar='',
+                        help='Creates desired statistics '
+                             '(authors, authors_per_month, tags, loc)',
+                        default=['all'],
+                        nargs="+")
 
     t_start = datetime.now()
     args = parser.parse_args()
