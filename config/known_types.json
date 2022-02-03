@@ -54,7 +54,7 @@
         "language": "Assembly"
     },
     ".py": {
-        "comments": [["#", "\n"]],
+        "comments": [["#", "\n"], ["\"\"\"", "\"\"\"\n"], ["'''", "'''\n"]],
         "description": "Python source",
         "is_source_code": true,
         "language": "Python"
