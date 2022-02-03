@@ -149,17 +149,26 @@ class LineCounter:
                     empty_lines += 1
                     continue
                 for comment in comments:
-                    if (len(comment)) < 2:
-                        msg = f'known_types.json->comments must be array of array [["start", "end"]] or empty [].' \
+                    if len(comment) < 2:
+                        msg = f'known_types.json->comments must be array of ' \
+                              f'array [["start", "end"]] or empty [].' \
                               f' Check {ext}'
                         print(msg)
                         continue
                     comment_start = comment[0]
                     if line.startswith(comment_start):
+                        not_code_line = True
                         comment_end = comment[1]
                         comment_lines += 1
-                        comment_end_found = comment_end in line
-                        not_code_line = True
+                        # Calculate minimum expected length of the line to
+                        # register the comment end
+                        min_len = len(comment_start) + len(comment_end)
+                        comment_end_found = (
+                                comment_end in line
+                                and
+                                len(line) >= min_len
+                        )
+
                 if not_code_line:
                     not_code_line = False
                     continue
