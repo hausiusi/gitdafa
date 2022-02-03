@@ -41,22 +41,25 @@ class Statistics(object):
         self.authors_per_month = {}
 
     def parse_authors_per_month(self):
+        authors_per_month = {}
         if not self.authors.collection:
             self.parse_authors()
         for author_email in self.authors.collection:
             commits = self.authors.collection[author_email].commits
             for commit in commits:
                 month = (commit.datetime.year, commit.datetime.month)
-                if month not in self.authors_per_month:
-                    self.authors_per_month[month] = {author_email: Author(
+                if month not in authors_per_month:
+                    authors_per_month[month] = {author_email: Author(
                         name=self.authors.collection[author_email].name,
                         email=author_email)}
                 else:
-                    if author_email not in self.authors_per_month[month]:
-                        self.authors_per_month[month][author_email] = Author(
+                    if author_email not in authors_per_month[month]:
+                        authors_per_month[month][author_email] = Author(
                             name=self.authors.collection[author_email].name,
                             email=author_email)
-                    self.authors_per_month[month][author_email].add_commit(commit)
+                    authors_per_month[month][author_email].add_commit(commit)
+        self.authors_per_month = dict(sorted(authors_per_month.items(),
+                                             key=lambda x: x[0]))
         return self.authors_per_month
 
     def parse_authors(self):
@@ -170,10 +173,13 @@ class Statistics(object):
         rows = []
         if not _dict:
             return "N/A"
-        for k in _dict.keys():
-            index = [k] if add_index else []
+        for k in _dict:
+            # Format date tuple
+            if isinstance(k, tuple):
+                date = datetime(year=k[0], month=k[1], day=1).strftime("%G %B")
+            index = [date] if add_index else []
             rows.append(index + _dict[k].get_table_row())
-        headers = next(iter(_dict.values())).get_table_headers()
+        headers = _dict[k].get_table_headers()
         table = tabulate(rows, headers)
         return table
 
@@ -186,7 +192,6 @@ class Statistics(object):
 
     def __str__(self):
         authors = self.authors.collection
-        author_per_month = self.authors_per_month
         authors_duration = self.authors.collection_creation_duration(
             '{H:02}:{M:02}:{S:02}.{F:06}')
         tags = self.tags.collection
@@ -207,27 +212,28 @@ class Statistics(object):
 
         all_authors_per_month = ''
         month_stats = {}
-        for month in author_per_month:
+        for month in self.authors_per_month:
             all_author = Author(name='All', email='all')
-            for author in author_per_month[month]:
-                current_auth = author_per_month[month][author]
+            for author in self.authors_per_month[month]:
+                current_auth = self.authors_per_month[month][author]
                 all_author.commits.extend(current_auth.commits)
                 all_author.lines_added += current_auth.lines_added
                 all_author.lines_deleted += current_auth.lines_deleted
             month_stats[month] = all_author
-            author_in_month_table = self.__get_table(author_per_month[month])
-            all_authors_per_month += f'MONTH({month})\n{author_in_month_table}\n*\n'
+            author_in_month_table = self.__get_table(self.authors_per_month[month])
+            date = datetime(year=month[0], month=month[1], day=1).strftime("%G %B")
+            all_authors_per_month += f'{date}\n-------------\n{author_in_month_table}\n\n\n'
 
         all_lines_per_month = ''
         all_month_table = self.__get_table(month_stats, add_index=True)
-        all_lines_per_month += f'MONTH ALL\n{all_month_table}\n'
+        all_lines_per_month += f'\n{all_month_table}\n'
 
         ret = \
             f'\n\nSTATISTICS\nBranch: {self.branch}\nAll commits: {self.commits_count}' \
             f'\nTotal days: {project_duration.days}' \
             f'\n\nAUTHORS({len(authors)})\n{authors_table}\nDuration: {authors_duration}' \
-            + '\n\n\nAUTHORS_PER_MONTH \n' + all_authors_per_month \
-            + '\n\n\nALL_PER_MONTH \n' + all_lines_per_month + \
+            + '\n\n\nAUTHORS CONTRIBUTION PER MONTH \n\n' + all_authors_per_month \
+            + '\n\n\nALL MONTHLY CONTRIBUTION \n' + all_lines_per_month + \
             f'\n\n\nTAGS({len(tags)})\n{tags_table}\nDuration: {tags_duration}' \
             f'\n\nLOC({len(lang_stats)} language types)\n{lang_stats_table}\nDuration: {lang_stats_duration}' \
             f'\n\nAnalyzed {len(code_file_infos)} different files\n{analyzed_files_table}' \
