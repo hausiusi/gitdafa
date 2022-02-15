@@ -60,7 +60,7 @@ def ignored_files_clear():
 def ignored_directories_extend(directories):
     """
     Extend ignored directories list
-    
+
     Parameters
     ----------
     directories : dict
@@ -72,7 +72,7 @@ def ignored_directories_extend(directories):
 def ignored_extensions_extend(extensions):
     """
     Extend ignored extensions list
-    
+
     Parameters
     ----------
     extensions : list
@@ -84,7 +84,7 @@ def ignored_extensions_extend(extensions):
 def ignored_subdirectories_extend(subdirs):
     """
     Extend ignored_subdirectories list
-    
+
     Parameters
     ----------
     subdirs : dict
@@ -108,7 +108,7 @@ def ignored_files_extend(files):
 class LineCounter:
     """
     Analyze code and count lines
-    
+
     Parameters
     ----------
     code_file_path : str
@@ -203,11 +203,11 @@ def get_file_names(root_dir: str):
     """
     Get all files under the root_dir except files that are placed in the
     ignored directories or have ignored extensions
-    
+
     Parameters
     ----------
     root_dir : str
-    
+
     Returns
     -------
     list of str

@@ -21,6 +21,8 @@ class Statistics(object):
 
     def __init__(self,
                  root_dir,
+                 files=None,
+                 directories=None,
                  parse_step_len: int = 20000,
                  count_continued_lines: bool = False,
                  runner=CmdRunner):
@@ -36,6 +38,9 @@ class Statistics(object):
         self.last_commit_date = self.runner.run(Cmd.LAST_COMMIT_DATE).stdout
         self.parse_step_len: int = int(parse_step_len)
         self.root_dir: str = root_dir
+        self.files = files
+        self.directories = directories
+
         self.count_continued_lines = count_continued_lines
         self.errors: list = []
         self.authors_per_month = {}
@@ -140,15 +145,19 @@ class Statistics(object):
         return self
 
     def parse_contribution_in_current_code(self):
-
         return self
 
     def count_lines(self):
         self.language_stats.collection_creation_start()
-        files_to_analyze = line_counter.get_file_names(self.root_dir)
-        files_count = len(files_to_analyze)
+
+        if self.files or self.directories:
+            for stat_dir in self.directories:
+                self.files.extend(line_counter.get_file_names(stat_dir))
+        else:
+            self.files = line_counter.get_file_names(self.root_dir)
+        files_count = len(self.files)
         current = 0
-        for file in files_to_analyze:
+        for file in self.files:
             current += 1
             cf_analyzer = LineCounter(file)
             cfi = cf_analyzer.count(self.count_continued_lines)

@@ -43,9 +43,14 @@ def prepare_results(root_dir: str, start_time: datetime) -> str:
 
 
 def prepare_for_statistics(root_dir,
+                           files,
+                           directories,
                            commits_per_step,
                            count_continued_lines) -> Statistics:
-    statistics = Statistics(root_dir, commits_per_step,
+    statistics = Statistics(root_dir,
+                            files,
+                            directories,
+                            commits_per_step,
                             count_continued_lines=count_continued_lines)
     request_map = {
         'authors': statistics.parse_authors,
@@ -64,6 +69,18 @@ if __name__ == "__main__":
                         metavar='',
                         help='Path to project root directory',
                         default="./")
+    parser.add_argument('-fl',
+                        '--files',
+                        metavar='',
+                        help='File paths to count lines in',
+                        default=[],
+                        nargs="+")
+    parser.add_argument('-dirs',
+                        '--directories',
+                        metavar='',
+                        help='Directories to count lines in',
+                        default=[],
+                        nargs="+")
     parser.add_argument('-id',
                         '--igndir',
                         metavar='',
@@ -115,6 +132,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     main_script_dir = sys.path[0]
     args.projdir = os.path.abspath(args.projdir)
+    args.files = [os.path.abspath(p) for p in args.files]
+    args.directories = [os.path.abspath(d) for d in args.directories]
     os.chdir(args.projdir)
     res_dir = prepare_results(main_script_dir, t_start)
     if args.igndir_clear:
@@ -125,9 +144,13 @@ if __name__ == "__main__":
     loc.ignored_directories_extend(args.igndir)
     loc.ignored_extensions_extend(args.ignext)
     loc.ignored_files_extend(args.ignfiles)
-    stats, fn_map = prepare_for_statistics(args.projdir,
-                                           args.commits_per_step,
-                                           args.count_continued_lines)
+    stats, fn_map = prepare_for_statistics(
+        args.projdir,
+        args.files,
+        args.directories,
+        args.commits_per_step,
+        args.count_continued_lines
+    )
 
     if "all" in args.stats:
         for k in fn_map.keys():
