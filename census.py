@@ -62,7 +62,7 @@ class Statistics(object):
                         authors_per_month[month][author_email] = Author(
                             name=self.authors.collection[author_email].name,
                             email=author_email)
-                    authors_per_month[month][author_email].add_commit(commit)
+                authors_per_month[month][author_email].add_commit(commit)
         self.authors_per_month = dict(sorted(authors_per_month.items(),
                                              key=lambda x: x[0]))
         return self.authors_per_month
@@ -92,6 +92,7 @@ class Statistics(object):
                         f'COMMIT TEXT:\n{commit_text}\n------------\n')
                     raise IOError
 
+                commit_.author = author_.name
                 if author_.email not in self.authors.collection:
                     self.authors.collection[author_.email] = author_
 
