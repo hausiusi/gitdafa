@@ -13,7 +13,7 @@ from census import Statistics
 
 # help
 EPILOG = """\
-Gitribution is a tool intended for statistical analyzes of git projects.
+Gitdafa is a tool intended for statistical analyzes of git projects.
 """
 
 
