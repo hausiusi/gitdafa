@@ -1,3 +1,12 @@
+# Gitdafa
+
+![GitHub Created At](https://img.shields.io/github/created-at/hausiusi/gitdafa)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/hausiusi/gitdafa)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/hausiusi/gitdafa/master)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/hausiusi/gitdafa)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-closed/hausiusi/gitdafa?color=lightgray)
+![GitHub License](https://img.shields.io/github/license/hausiusi/gitdafa)
+
 # Table of contents
 1. [How to run](#how-to-run)
    1. [Requirements](#requirements)
