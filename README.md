@@ -5,7 +5,7 @@
    3. [Linux](#linux)
 2. [Usage examples](#usage-examples)
 3. [Tests](#tests)
-3. [Contribution](#contribution)
+4. [Contribution](#contribution)
 
 ## How to run
 
