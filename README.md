@@ -8,13 +8,32 @@
 ![GitHub License](https://img.shields.io/github/license/hausiusi/gitdafa)
 
 # Table of contents
-1. [How to run](#how-to-run)
+1. [What is Gitdafa?](#what-is-gitdafa)
+2. [How to run](#how-to-run)
    1. [Requirements](#requirements)
    2. [Windows](#windows)
    3. [Linux](#linux)
-2. [Usage examples](#usage-examples)
-3. [Tests](#tests)
-4. [Contribution](#contribution)
+3. [Usage examples](#usage-examples)
+4. [Tests](#tests)
+5. [Contribution](#contribution)
+
+## What is Gitdafa
+
+Gitdafa is a friendly tool for diving into the statistics of your git projects. 
+While we know that metrics like lines of code and commit counts aren’t the ultimate 
+measure of developer performance, they can still provide fascinating insights for 
+anyone curious about the numbers behind the code contribution.
+
+With Gitdafa, you can uncover trends in contributions, explore how work is distributed
+among team members, and track changes over time.
+It’s handy for stats' enthusiasts or anyone who just wants a deeper understanding 
+of their project’s activity.
+
+The tool is flexible and customizable, so you can focus on what matters most to you:
+specific files, directories, or even filtering out unimportant data. Whether you’re
+interested in contributions by author, activity by month, or want to nerd out
+over the stats, Gitdafa makes it easy and fun to explore the git project.
+
 
 ## How to run
 
@@ -39,7 +58,7 @@ pip install -r ./requirements.txt
 
 ### Windows
 Windows usually doesn't come with Git installed. Git for windows can be downloaded
-from [here](https://git-scm.com/download/win) or could be got by typing in the 
+from [here](https://git-scm.com/download/win) or could be installed by typing in the 
 PowerShell (that is running with administrator privileges) the following command:
 
 `winget install --id Git.Git -e --source winget`
