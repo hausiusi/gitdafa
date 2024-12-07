@@ -14,13 +14,13 @@
 1. Python3 (3.7, 3.8, or 3.9)
 2. Git (version 2.23 or higher)
 
-To run this script Python3 must be installed. The Python3 versions that we have 
+To run this script, Python3 must be installed. The Python3 versions that we have 
 tested are 3.7, 3.8, or 3.9.
 
-For managing with specific Python version we recommend pyenv.
+For managing with a specific Python version, we recommend pyenv.
 
 Before installing the project [requirements](requirements.txt) it's highly 
-recommended to create virtual environment
+recommended to create a virtual environment
 ```commandline
 cd gitdafa
 python -m venv .venv
@@ -40,11 +40,11 @@ during setup. If this step was missed to the PATH environment variable can be ad
 manually these two: `C:\Program Files\Git\usr\bin\` and `C:\Program Files\Git\cmd`
 
 ### Linux
-Running the script on linux should be quite straightforward and no specific 
+Running the script on linux should be quite straightforward, and no specific 
 installations need to be performed.
 
 ## Usage examples
-The script must be run from main directory (where the run.py is located).
+The script must be run from the main directory (where the run.py is located).
 
 To get familiar with available arguments `python run.py --help`
 
