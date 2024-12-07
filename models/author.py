@@ -17,7 +17,7 @@ class Author(TableInterface):
     ----------
     self.name : str
     self.email : str
-    self.commits : list
+    self.commits : list of Commits
     self.lines_added : int
     self.lines_delete : int
 
@@ -28,7 +28,9 @@ class Author(TableInterface):
     Methods
     -------
     add_commit(commit)
-
+    get_table_row()
+    get_table_headers()
+    serialize()
     """
     def __init__(self, name: str = None, email: str = None):
         self.name: str = name

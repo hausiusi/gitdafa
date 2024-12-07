@@ -68,10 +68,6 @@ class Parse:
         Author or None
             Commit author object
         """
-        name = None
-        email = None
-        #print('-------')
-
         result = re.findall(r"Author:.*", text)
         if len(result) == 0:
             return None
