@@ -8,8 +8,8 @@ from datetime import datetime
 from distutils.dir_util import copy_tree
 from os import path
 
-import loc
-from census import Statistics
+from gitdafa import loc
+from gitdafa.census import Statistics
 
 # help
 EPILOG = """\
@@ -28,7 +28,10 @@ def save_results(results_dir: str, cli_args, time_start, time_end,
     with open(runtime_conf, encoding="utf-8", mode="w+", errors="replace") as f:
         for arg in vars(cli_args):
             f.write(f"{arg} = {getattr(cli_args, arg)},\n")
-    copy_tree("config", results_dir)
+
+    base_path = os.path.dirname(__file__)
+    full_path = os.path.join(base_path, "config")
+    copy_tree(full_path, results_dir)
 
 
 def prepare_results(root_dir: str, start_time: datetime) -> str:
@@ -61,7 +64,7 @@ def prepare_for_statistics(root_dir,
     return statistics, request_map
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         epilog=EPILOG, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-pd',
@@ -130,12 +133,12 @@ if __name__ == "__main__":
 
     t_start = datetime.now()
     args = parser.parse_args()
-    main_script_dir = sys.path[0]
+    results_base_dir = os.path.join(os.path.expanduser('~'), 'gitdafa')
     args.projdir = os.path.abspath(args.projdir)
     args.files = [os.path.abspath(p) for p in args.files]
     args.directories = [os.path.abspath(d) for d in args.directories]
     os.chdir(args.projdir)
-    res_dir = prepare_results(main_script_dir, t_start)
+    res_dir = prepare_results(results_base_dir, t_start)
     if args.igndir_clear:
         loc.ignored_directories_clear()
     if args.ignext_clear:
@@ -161,5 +164,8 @@ if __name__ == "__main__":
 
     print(stats)
     # change working directory back to the initial one
-    os.chdir(main_script_dir)
-    save_results(res_dir, args, t_start, datetime.now(), stats)
+    os.chdir(results_base_dir)
+    base_path = os.path.dirname(__file__)
+    full_path = os.path.join(base_path, "../", res_dir)
+    save_results(full_path, args, t_start, datetime.now(), stats)
+    print(f"Results saved to {full_path}")

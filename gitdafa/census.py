@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from _cmd import CmdRunner
-from git import Parse
-from git import Cmd
-from models import Commit, LanguageStats
-from models import Tag, Author
+from gitdafa._cmd import CmdRunner
+from gitdafa.git import Parse, Cmd
+from gitdafa.models import Commit, LanguageStats
+from gitdafa.models import Tag, Author
 from string import Formatter
 from tabulate import tabulate
 import re
 from datetime import datetime
-from loc import line_counter
-from loc.line_counter import LineCounter
+from gitdafa.loc import line_counter
+from gitdafa.loc.line_counter import LineCounter
 
 
 class Statistics(object):

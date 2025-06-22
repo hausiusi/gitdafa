@@ -5,7 +5,7 @@ import json
 import sys
 import os
 
-from models import CodeFileInfo
+from gitdafa.models import CodeFileInfo
 
 """
 Leads all configuration parameters and implements the code file analyzer
@@ -17,7 +17,10 @@ def __json_load(file_path: str):
     """
     Read json file from a specified file_path
     """
-    with open(file_path) as f:
+    base_path = os.path.dirname(__file__)
+    full_path = os.path.join(base_path, "../", file_path)
+    with open(full_path) as f:
+        print(f"Loading configuration from {full_path}")
         return json.load(f)
 
 

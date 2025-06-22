@@ -1,5 +1,5 @@
-from models import Author
-from models import Change
+from gitdafa.models import Author
+from gitdafa.models import Change
 import datetime
 import re
 """
