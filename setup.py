@@ -9,6 +9,9 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/hausiusi/gitdafa',
     packages=find_packages(),
+    package_data={
+        'gitdafa': ['config/*.json'],  # adjust this to match your structure
+    },
     install_requires=[
         'atomicwrites==1.4.0',
         'attrs==20.3.0',
