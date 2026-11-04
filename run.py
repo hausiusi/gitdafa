@@ -134,6 +134,12 @@ if __name__ == "__main__":
     args.projdir = os.path.abspath(args.projdir)
     args.files = [os.path.abspath(p) for p in args.files]
     args.directories = [os.path.abspath(d) for d in args.directories]
+    ignored_directories = []
+    for directory in args.igndir:
+        directory = directory.replace('\\', '/')
+        if directory in ('.', '..') or directory.startswith(('./', '../')):
+            directory = os.path.abspath(directory)
+        ignored_directories.append(directory)
     os.chdir(args.projdir)
     res_dir = prepare_results(main_script_dir, t_start)
     if args.igndir_clear:
@@ -141,7 +147,7 @@ if __name__ == "__main__":
     if args.ignext_clear:
         loc.ignored_extensions_clear()
 
-    loc.ignored_directories_extend(args.igndir)
+    loc.ignored_directories_extend(ignored_directories)
     loc.ignored_extensions_extend(args.ignext)
     loc.ignored_files_extend(args.ignfiles)
     stats, fn_map = prepare_for_statistics(

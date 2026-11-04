@@ -86,6 +86,11 @@ where:
 * -id bin obj tools .git .vs libs - gets the list of directories that must be omitted
 * -ie .sln .dll .log .pdf .settings .user .ico .exe .csproj .resx .png .config .p7s .nupkg .xml ._ - get the list of file extensions to be ignored
 
+Use an absolute path or start a relative path with `./` or `../` to omit
+one specific directory and its descendants. These relative paths are resolved
+from the directory where you launch Gitdafa. Bare names such as `bin` still
+match directory path fragments throughout the project.
+
 The processing output will be printed in command line and also under the **_results/_**
 directory these stats with the date, runtime arguments and configuration is saved
 
