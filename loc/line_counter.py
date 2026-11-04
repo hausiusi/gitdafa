@@ -229,7 +229,17 @@ def get_file_names(root_dir: str):
     root_dir = root_dir.replace(_sep, sep)
     ignored_directories = [igd.replace(_sep, sep) for igd in
                            ignored_directories]
+    absolute_ignores = {os.path.normcase(os.path.normpath(directory))
+                        for directory in ignored_directories
+                        if os.path.isabs(directory)}
+    absolute_prefixes = tuple(directory.rstrip(sep) + sep
+                              for directory in absolute_ignores)
+    relative_ignores = [directory for directory in ignored_directories
+                        if not os.path.isabs(directory)]
     for root, _, files in os.walk(root_dir):
+        root_path = os.path.normcase(os.path.abspath(root))
+        if root_path in absolute_ignores or root_path.startswith(absolute_prefixes):
+            continue
         check_dir = True
         split_dirs = os.path.relpath(root, root_dir).split(sep)
         for sp_dir in split_dirs:
@@ -238,7 +248,7 @@ def get_file_names(root_dir: str):
                 break
         add_files = True
         if check_dir:
-            for ignored_dir in ignored_directories:
+            for ignored_dir in relative_ignores:
                 if ignored_dir in root:
                     add_files = False
                     break
