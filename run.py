@@ -10,11 +10,22 @@ from os import path
 
 import loc
 from census import Statistics
+from report import generate_html_report
 
 # help
 EPILOG = """\
 Gitdafa is a tool intended for statistical analyzes of git projects.
 """
+
+
+def str_to_bool(value) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value.lower() in ('true', 't', 'yes', 'y', '1', 'on'):
+        return True
+    if value.lower() in ('false', 'f', 'no', 'n', '0', 'off'):
+        return False
+    raise argparse.ArgumentTypeError(f"Boolean value expected, got '{value}'")
 
 
 def save_results(results_dir: str, cli_args, time_start, time_end,
@@ -29,6 +40,9 @@ def save_results(results_dir: str, cli_args, time_start, time_end,
         for arg in vars(cli_args):
             f.write(f"{arg} = {getattr(cli_args, arg)},\n")
     copy_tree("config", results_dir)
+    if getattr(cli_args, "html", False):
+        html_file = generate_html_report(results_file)
+        print(f"HTML report: {html_file}")
 
 
 def prepare_results(root_dir: str, start_time: datetime) -> str:
@@ -127,6 +141,15 @@ if __name__ == "__main__":
                              '(authors, authors_per_month, tags, loc)',
                         default=['all'],
                         nargs="+")
+    parser.add_argument('-html',
+                        '--html',
+                        metavar='',
+                        help='Generates an HTML report (stats.html) from the '
+                             'statistics log (true/false, default: true)',
+                        type=str_to_bool,
+                        nargs='?',
+                        const=True,
+                        default=True)
 
     t_start = datetime.now()
     args = parser.parse_args()

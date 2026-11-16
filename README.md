@@ -94,6 +94,12 @@ match directory path fragments throughout the project.
 The processing output will be printed in command line and also under the **_results/_**
 directory these stats with the date, runtime arguments and configuration is saved
 
+By default, an HTML report (**_stats.html_**) is also generated from the statistics
+log in the same results directory. It contains every value from the log with
+charts, sortable/filterable tables and the raw log itself. To skip it, pass
+`--html false`. A report can also be (re)generated from any existing log:
+`python -m report results/<run>/stats.txt`
+
 Currently, the analyzer supports more than 20 extensions. New types/languages
 can be added to **_./config/known_types.json_** file
 

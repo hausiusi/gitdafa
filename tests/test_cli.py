@@ -8,7 +8,7 @@ def test_cli_ignores_directory_relative_to_launch_directory(tmp_path):
     source = Path(__file__).resolve().parents[1]
     tool = tmp_path / "gitdafa"
     tool.mkdir()
-    for name in ("_cmd", "config", "git", "loc", "models"):
+    for name in ("_cmd", "config", "git", "loc", "models", "report"):
         shutil.copytree(source / name, tool / name)
     for name in ("census.py", "run.py"):
         shutil.copyfile(source / name, tool / name)
