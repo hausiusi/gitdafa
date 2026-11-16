@@ -124,6 +124,18 @@
         "description": "Bitbake append file",
         "is_source_code": true,
         "language": "Bitbake"
-    }
+    },
+        ".gd": {
+            "comments": [["#", "\n"], ["\"\"\"", "\"\"\"\n"], ["'''", "'''\n"]],
+            "description": "GDScript source",
+            "is_source_code": true,
+            "language": "GDScript"
+        },
+        ".gdshader": {
+            "comments": [["//", "\n"], ["/*", "*/"]],
+            "description": "GDScript shader source",
+            "is_source_code": true,
+            "language": "GD shader"
+        }
 }
 
