@@ -10,7 +10,7 @@ import loc
 def _clear_ignore_lists():
     loc.ignored_extensions_clear()
     loc.ignored_directories_clear()
-    # loc.ignored_subdirectories_clear()
+    loc.ignored_subdirectories_clear()
     # loc.ignored_filenames_clear()
 
 

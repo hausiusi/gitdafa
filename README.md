@@ -39,11 +39,11 @@ over the stats, Gitdafa makes it easy and fun to explore the git project.
 
 ### Requirements
 
-1. Python3 (3.7, 3.8, or 3.9)
+1. Python3 (3.11 or newer)
 2. Git (version 2.23 or higher)
 
 To run this script, Python3 must be installed. The Python3 versions that we have 
-tested are 3.7, 3.8, or 3.9.
+tested are 3.11, 3.12, 3.13 and 3.14.
 
 For managing with a specific Python version, we recommend pyenv.
 
@@ -93,6 +93,12 @@ match directory path fragments throughout the project.
 
 The processing output will be printed in command line and also under the **_results/_**
 directory these stats with the date, runtime arguments and configuration is saved
+
+By default, an HTML report (**_stats.html_**) is also generated from the statistics
+log in the same results directory. It contains every value from the log with
+charts, sortable/filterable tables and the raw log itself. To skip it, pass
+`--html false`. A report can also be (re)generated from any existing log:
+`python -m report results/<run>/stats.txt`
 
 Currently, the analyzer supports more than 20 extensions. New types/languages
 can be added to **_./config/known_types.json_** file

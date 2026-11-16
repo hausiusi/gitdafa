@@ -72,6 +72,7 @@ def test_statistics():
 
     loc.ignored_extensions_clear()
     loc.ignored_directories_clear()
+    loc.ignored_subdirectories_clear()
     stats.count_lines()
     expected_languages = expects['count_lines']['languages']
     for language in expected_languages:
