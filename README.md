@@ -39,11 +39,11 @@ over the stats, Gitdafa makes it easy and fun to explore the git project.
 
 ### Requirements
 
-1. Python3 (3.7, 3.8, or 3.9)
+1. Python3 (3.11 or newer)
 2. Git (version 2.23 or higher)
 
 To run this script, Python3 must be installed. The Python3 versions that we have 
-tested are 3.7, 3.8, or 3.9.
+tested are 3.11, 3.12, 3.13 and 3.14.
 
 For managing with a specific Python version, we recommend pyenv.
 

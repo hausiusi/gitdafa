@@ -3,9 +3,9 @@
 
 import argparse
 import os
+import shutil
 import sys
 from datetime import datetime
-from distutils.dir_util import copy_tree
 from os import path
 
 import loc
@@ -39,7 +39,7 @@ def save_results(results_dir: str, cli_args, time_start, time_end,
     with open(runtime_conf, encoding="utf-8", mode="w+", errors="replace") as f:
         for arg in vars(cli_args):
             f.write(f"{arg} = {getattr(cli_args, arg)},\n")
-    copy_tree("config", results_dir)
+    shutil.copytree("config", results_dir, dirs_exist_ok=True)
     if getattr(cli_args, "html", False):
         html_file = generate_html_report(results_file)
         print(f"HTML report: {html_file}")
